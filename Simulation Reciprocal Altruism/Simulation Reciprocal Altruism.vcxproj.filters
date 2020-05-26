@@ -30,15 +30,6 @@
     <ClInclude Include="Agent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cooperator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Deflector.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TFT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -47,16 +38,7 @@
     <ClCompile Include="Simulation Reciprocal Altruism.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cooperator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Deflector.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Agent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TFT.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

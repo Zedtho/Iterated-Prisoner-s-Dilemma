@@ -3,7 +3,6 @@
 class Agent
 {
 public:
-	Agent();
 	enum Strategy
 	{
 		Cooperator,
@@ -11,8 +10,18 @@ public:
 		Deflector,
 		Bogus
 	};
+
+protected:
+	std::vector<Agent*> Naughtylist;
+	Strategy strategy;
+
+public:
+
+
 	static const int StartScore = 4;
 	int Score = StartScore;
+
+	//functions
 	Strategy GetStrategy()
 	{
 		return strategy;
@@ -21,12 +30,25 @@ public:
 	{
 		return Score;
 	}
-	virtual bool WillCooperate(Agent* agent) { return 1; };
-	//The following two are only functions used by TFT, but has to be declared here to work. Seems suboptimal.
-	void RemoveNaughty(Agent* agent){};
-	void AddNaughty(Agent* agent){};
+	bool WillCooperate(Agent* agent);
 	Agent ReturnCopy() { return *this;};
-protected:
-	Strategy strategy;
+	Agent(Strategy strat);
+	void AddNaughty(Agent* agent)
+	{
+		Naughtylist.push_back(agent);
+	}
+	void RemoveNaughty(Agent* agent)
+	{
+		for (unsigned int i = 0; i < Naughtylist.size(); ++i)
+		{
+			if (Naughtylist[i] == agent)
+			{
+				std::swap(Naughtylist[i], Naughtylist[Naughtylist.size() - 1]);
+				Naughtylist.pop_back();
+			}
+		}
+
+
+}
 
 };

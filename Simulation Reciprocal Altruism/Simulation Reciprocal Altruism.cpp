@@ -23,22 +23,22 @@ int main()
 	//Seems to work
 		for (int i = 0; i < InitAmountCoop; ++i)
 		{
-			CoopContainer.push_back(Cooperator());
-			Agents.push_back(&CoopContainer[i]);
-			AliveAgents.push_back(Agents[i]);
+			
+			Agents.push_back(Agent(Agent::Strategy::Cooperator));
+			AliveAgents.push_back(&Agents[i]);
 
 		}
 		int arraySize = Agents.size();
 		for (int i = 0; i < InitAmountDefl; ++i)
 		{
-			Agents.push_back(&Deflector());
-			AliveAgents.push_back(Agents[i + arraySize]);
+			Agents.push_back(Agent(Agent::Strategy::Deflector));
+			AliveAgents.push_back(&Agents[i + arraySize]);
 		}
 		arraySize = Agents.size();
 		for (int i = 0; i < InitAmountTFT; ++i)
 		{
-			Agents.push_back(&TFT());
-			AliveAgents.push_back(Agents[i + arraySize]);
+			Agents.push_back(Agent(Agent::Strategy::TFT));
+			AliveAgents.push_back(&Agents[i + arraySize]);
 		}
 	
 
@@ -127,7 +127,7 @@ int main()
 			{
 				(*AliveAgents[i]).Score = Agent::StartScore;
 				Agent* agent = &(*AliveAgents[i]).ReturnCopy();
-				Agents.push_back(agent);
+				Agents.push_back(*agent);
 				AliveAgents.push_back(agent);
 			}
 		}

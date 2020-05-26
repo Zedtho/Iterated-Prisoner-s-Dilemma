@@ -20,8 +20,6 @@ const int CooperateValue = 3;
 const int DeflectorValue = -1;
 const int DeathScore = 0;
 const int ReproduceScore = 20;
-std::vector<Cooperator> CoopContainer;
-std::vector<Deflector> DeflContainer;
-std::vector<TFT> TFTContainer;
-std::vector<Agent*> Agents;
+
+std::vector<Agent> Agents;
 std::vector<Agent*> AliveAgents;
