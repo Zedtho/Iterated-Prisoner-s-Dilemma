@@ -17,3 +17,5 @@ It is expected that the TFT strategy is most effective, and that as such it will
 As such, reciprocal altruism can be shown to be an effective strategy.
 
 This theory is one I wanted to check with a program for a biological paper I am writing for school.
+
+The most functional simulation so far is the branch "Merger"
