@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "Agent.h"
+#include <iostream>
 
 Agent::Agent(Strategy strat)
 {
 	strategy = strat;
 	Score = StartScore;
 }
+
+const float Agent::StartScore= 10.0f;
 
 Agent::Agent(Agent* agent)
 {
@@ -15,7 +18,7 @@ Agent::Agent(Agent* agent)
 
 bool Agent::WillCooperate(Agent* agent)
 {
-	bool WillCooperate;
+	bool WillCooperate =true;
 	switch (strategy)
 	{
 	case Strategy::Cooperator:
@@ -33,10 +36,13 @@ bool Agent::WillCooperate(Agent* agent)
 			if (Naughtylist[i] == agent)
 			{
 				WillCooperate = false;
+
+				std::cout << "\n Naughty boi ";
 			}
 		}
 		break;
 	default: 
+		std::cout << "SHIT";
 		//Throw an exception
 		break;
 	

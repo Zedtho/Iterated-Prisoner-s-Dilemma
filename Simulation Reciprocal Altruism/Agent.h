@@ -18,15 +18,15 @@ protected:
 public:
 
 
-	static const int StartScore = 4;
-	int Score = StartScore;
+	static const float StartScore;
+	float Score = StartScore;
 
 	//functions
 	Strategy GetStrategy()
 	{
 		return strategy;
 	}
-	int GetScore()
+	float GetScore()
 	{
 		return Score;
 	}
@@ -36,7 +36,18 @@ public:
 	Agent(Agent* agent);
 	void AddNaughty(Agent* agent)
 	{
-		Naughtylist.push_back(agent);
+		bool AlreadyNaughty = false;
+		for (unsigned int i = 0; i < Naughtylist.size(); ++i)
+		{
+			if (Naughtylist[i] = agent)
+			{
+				AlreadyNaughty = true;
+			}
+		}
+		if (AlreadyNaughty = false)
+		{
+			Naughtylist.push_back(agent);
+		}
 	}
 	void RemoveNaughty(Agent* agent)
 	{

@@ -18,15 +18,13 @@ int main()
 	std::cout << " \n" << "Finally, how many rounds should this simulation run for? \n";
 	std::cin >> AmountRounds;
 
-	Agents.reserve(1000*(InitAmountCoop + InitAmountDefl + InitAmountTFT));
+	Agents.reserve(10000*(InitAmountCoop + InitAmountDefl + InitAmountTFT));
 	//Initializes Agents and AliveAgents
 	//Seems to work
 		for (int i = 0; i < InitAmountCoop; ++i)
 		{
-			
 			Agents.push_back(Agent(Agent::Strategy::Cooperator));
 			AliveAgents.push_back(&Agents[i]);
-
 		}
 		int arraySize = Agents.size();
 		for (int i = 0; i < InitAmountDefl; ++i)
@@ -96,8 +94,10 @@ int main()
 				{
 				case true:
 					AliveAgents[FirstCandidateNumber]->RemoveNaughty(AliveAgents[SecondCandidateNumber]);
+					break;
 				case false:
 					AliveAgents[FirstCandidateNumber]->AddNaughty(AliveAgents[SecondCandidateNumber]);
+					break;
 				}
 			}
 			if (AliveAgents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
@@ -106,8 +106,10 @@ int main()
 				{
 				case true:
 					AliveAgents[SecondCandidateNumber]->RemoveNaughty(AliveAgents[FirstCandidateNumber]);
+					break;
 				case false:
 					AliveAgents[SecondCandidateNumber]->AddNaughty(AliveAgents[FirstCandidateNumber]);
+					break;
 				}
 			}
 		}
