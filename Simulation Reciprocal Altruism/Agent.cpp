@@ -7,6 +7,12 @@ Agent::Agent(Strategy strat)
 	Score = StartScore;
 }
 
+Agent::Agent(Agent* agent)
+{
+	strategy = (*agent).strategy;
+	Score = StartScore;
+}
+
 bool Agent::WillCooperate(Agent* agent)
 {
 	bool WillCooperate;

@@ -33,6 +33,7 @@ public:
 	bool WillCooperate(Agent* agent);
 	Agent ReturnCopy() { return *this;};
 	Agent(Strategy strat);
+	Agent(Agent* agent);
 	void AddNaughty(Agent* agent)
 	{
 		Naughtylist.push_back(agent);

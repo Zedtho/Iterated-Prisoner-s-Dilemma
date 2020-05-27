@@ -15,10 +15,10 @@ int main()
 	std::cin >> InitAmountTFT;
 	std::cout << " \n" << "Insert the amount of starting Deflectors \n";
 	std::cin >> InitAmountDefl;
-	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
+	std::cout << " \n" << "Finally, how many rounds should this simulation run for? \n";
 	std::cin >> AmountRounds;
 
-
+	Agents.reserve(10*(InitAmountCoop + InitAmountDefl + InitAmountTFT));
 	//Initializes Agents and AliveAgents
 	//Seems to work
 		for (int i = 0; i < InitAmountCoop; ++i)
@@ -57,62 +57,62 @@ int main()
 				SecondCandidateNumber = rand() % AliveAgents.size();
 			}
 
-			bool WillFirstCoop = (*AliveAgents[FirstCandidateNumber]).WillCooperate(AliveAgents[SecondCandidateNumber]);
-			bool WillSecondCoop = (*AliveAgents[SecondCandidateNumber]).WillCooperate(AliveAgents[FirstCandidateNumber]);
+			bool WillFirstCoop = (AliveAgents[FirstCandidateNumber]->WillCooperate(AliveAgents[SecondCandidateNumber]));
+			bool WillSecondCoop = (AliveAgents[SecondCandidateNumber]->WillCooperate(AliveAgents[FirstCandidateNumber]));
 			//The actual meeting
 			switch (WillFirstCoop)
 			{
 			case true:
 				if (WillSecondCoop == true)
 				{
-					(*AliveAgents[FirstCandidateNumber]).Score += CooperateValue;
-					(*AliveAgents[SecondCandidateNumber]).Score += CooperateValue;
+					AliveAgents[FirstCandidateNumber]->Score += CooperateValue;
+					AliveAgents[SecondCandidateNumber]->Score += CooperateValue;
 				}
 				else 
 				{
-					(*AliveAgents[FirstCandidateNumber]).Score += LoserValue;
-					(*AliveAgents[SecondCandidateNumber]).Score += WinnerValue;
+					AliveAgents[FirstCandidateNumber]->Score += LoserValue;
+					AliveAgents[SecondCandidateNumber]->Score += WinnerValue;
 				}
 				break;
 			case false:
 				if (WillSecondCoop == true)
 				{
-					(*AliveAgents[FirstCandidateNumber]).Score += WinnerValue;
-					(*AliveAgents[SecondCandidateNumber]).Score += LoserValue;
+					AliveAgents[FirstCandidateNumber]->Score += WinnerValue;
+					AliveAgents[SecondCandidateNumber]->Score += LoserValue;
 				}
 				else
 				{
-					(*AliveAgents[FirstCandidateNumber]).Score += DeflectorValue;
-					(*AliveAgents[SecondCandidateNumber]).Score += DeflectorValue;
+					AliveAgents[FirstCandidateNumber]->Score += DeflectorValue;
+					AliveAgents[SecondCandidateNumber]->Score += DeflectorValue;
 				}
 				break;
 			}
 			//Remembering system for TFTs
-			if ((*AliveAgents[FirstCandidateNumber]).GetStrategy() == Agent::Strategy::TFT)
+			if (AliveAgents[FirstCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
 			{
 				switch (WillSecondCoop)
 				{
 				case true:
-					(*AliveAgents[FirstCandidateNumber]).RemoveNaughty(AliveAgents[SecondCandidateNumber]);
+					AliveAgents[FirstCandidateNumber]->RemoveNaughty(AliveAgents[SecondCandidateNumber]);
 				case false:
-					(*AliveAgents[FirstCandidateNumber]).AddNaughty(AliveAgents[SecondCandidateNumber]);
+					AliveAgents[FirstCandidateNumber]->AddNaughty(AliveAgents[SecondCandidateNumber]);
 				}
 			}
-			if ((*AliveAgents[SecondCandidateNumber]).GetStrategy() == Agent::Strategy::TFT)
+			if (AliveAgents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
 			{
 				switch (WillFirstCoop)
 				{
 				case true:
-					(*AliveAgents[SecondCandidateNumber]).RemoveNaughty(AliveAgents[FirstCandidateNumber]);
+					AliveAgents[SecondCandidateNumber]->RemoveNaughty(AliveAgents[FirstCandidateNumber]);
 				case false:
-					(*AliveAgents[SecondCandidateNumber]).AddNaughty(AliveAgents[FirstCandidateNumber]);
+					AliveAgents[SecondCandidateNumber]->AddNaughty(AliveAgents[FirstCandidateNumber]);
 				}
 			}
 		}
 		//Handles deaths
 		for (unsigned int i = 0; i < AliveAgents.size(); ++i)
 		{
-			if ((*AliveAgents[i]).GetScore() <= DeathScore)
+			if (AliveAgents[i]->GetScore() <= DeathScore)
 			{
 				//swaps that pointer with last one
 				std::swap(AliveAgents[i], AliveAgents[AliveAgents.size() - 1]);
@@ -120,15 +120,17 @@ int main()
 
 			}
 		}
+
 		//Handles reproductions
 		for (unsigned int i = 0; i < AliveAgents.size(); ++i)
 		{
-			if ((*AliveAgents[i]).GetScore() > ReproduceScore)
+			if (AliveAgents[i]->GetScore() > ReproduceScore)
 			{
-				(*AliveAgents[i]).Score = Agent::StartScore;
-				Agent* agent = &(*AliveAgents[i]).ReturnCopy();
-				Agents.push_back(*agent);
-				AliveAgents.push_back(agent);
+				unsigned int TempSize = Agents.size();
+				AliveAgents[i]->Score = Agent::StartScore;
+				Agent agent = AliveAgents[i]->ReturnCopy();
+				Agents.push_back(agent);
+				AliveAgents.push_back(&Agents[TempSize]);
 			}
 		}
 
