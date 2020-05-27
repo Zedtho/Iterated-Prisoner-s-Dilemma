@@ -48,13 +48,15 @@ int main()
 		//Handles meetings
 		for (int i = 0; i < std::floor(AliveAgents.size()*nMeetingsProportion); ++i)
 		{
-			srand((unsigned int)time(NULL));
-			unsigned int FirstCandidateNumber = rand() % AliveAgents.size();
-			unsigned int SecondCandidateNumber = rand() % AliveAgents.size();
+			//FIX THIS
+			std::uniform_int_distribution<std::mt19937::result_type> distAlive(0, AliveAgents.size() - 1); // distribution in range [0, to top of vector]
+
+			unsigned int FirstCandidateNumber = distAlive(rng);
+			unsigned int SecondCandidateNumber = distAlive(rng);
 
 			while (FirstCandidateNumber == SecondCandidateNumber)
 			{
-				SecondCandidateNumber = rand() % AliveAgents.size();
+				SecondCandidateNumber = distAlive(rng);
 			}
 
 			bool WillFirstCoop = (AliveAgents[FirstCandidateNumber]->WillCooperate(AliveAgents[SecondCandidateNumber]));
