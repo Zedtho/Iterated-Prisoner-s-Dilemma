@@ -46,9 +46,14 @@ int main()
 		//Handles meetings
 		for (int i = 0; i < std::floor(AliveAgents.size()*nMeetingsProportion); ++i)
 		{
-			//FIX THIS
-			std::uniform_int_distribution<std::mt19937::result_type> distAlive(0, AliveAgents.size() - 1); // distribution in range [0, to top of vector]
-
+			std::random_device rd;
+			std::mt19937 rng(rd());
+			std::uniform_int_distribution<int> distAlive(0, AliveAgents.size() - 1);
+			int Check = distAlive(rng);
+			int Check2 = distAlive(rng);
+			int Check3 = distAlive(rng);
+			int Check4 = distAlive(rng);
+			int Check5 = distAlive(rng);
 			unsigned int FirstCandidateNumber = distAlive(rng);
 			unsigned int SecondCandidateNumber = distAlive(rng);
 
