@@ -126,7 +126,7 @@ int main()
 		}
 
 		//Handles reproductions
-		for (unsigned int i = 0; i < AliveAgents.size(); ++i)
+		/*for (unsigned int i = 0; i < AliveAgents.size(); ++i)
 		{
 			if (AliveAgents[i]->GetScore() > ReproduceScore)
 			{
@@ -136,10 +136,10 @@ int main()
 				Agents.push_back(agent);
 				AliveAgents.push_back(&Agents[TempSize]);
 			}
-		}
+		}*/
 
 		//Tally different types and output them
-		int AmountCoop = 0;
+		/*int AmountCoop = 0;
 		int AmountDefl = 0;
 		int AmountTFT = 0;
 		int AmountBogus = 0;
@@ -163,7 +163,32 @@ int main()
 
 
 		}
-		std::cout << AmountCoop << "/" << AmountTFT << "/" << AmountDefl << "/" << AmountBogus << "\n";
+		std::cout << AmountCoop << "/" << AmountTFT << "/" << AmountDefl << "/" << AmountBogus << "\n"; */
+
+		//Tally up the scores
+		float CoopScore = 0;
+		float TFTScore = 0;
+		float DeflectScore = 0;
+		float BogusScore = 0;
+		for (unsigned int i = 0; i < AliveAgents.size(); ++i)
+		{
+			switch (AliveAgents[i]->GetStrategy())
+			{
+			case Agent::Strategy::Cooperator:
+				CoopScore += AliveAgents[i]->Score;
+				break;
+			case Agent::Strategy::Deflector:
+				DeflectScore += AliveAgents[i]->Score;
+				break;
+			case Agent::Strategy::TFT:
+				TFTScore += AliveAgents[i]->Score;
+				break;
+			case Agent::Strategy::Bogus:
+				BogusScore += AliveAgents[i]->Score;
+
+			}
+		}
+		std::cout << "\n" << CoopScore << "/" << TFTScore << "/" << DeflectScore << "/" << BogusScore;
 	}
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
