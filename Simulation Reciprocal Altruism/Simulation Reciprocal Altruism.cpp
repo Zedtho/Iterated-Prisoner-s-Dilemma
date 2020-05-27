@@ -18,7 +18,7 @@ int main()
 	std::cout << " \n" << "Finally, how many rounds should this simulation run for? \n";
 	std::cin >> AmountRounds;
 
-	Agents.reserve(10*(InitAmountCoop + InitAmountDefl + InitAmountTFT));
+	Agents.reserve(1000*(InitAmountCoop + InitAmountDefl + InitAmountTFT));
 	//Initializes Agents and AliveAgents
 	//Seems to work
 		for (int i = 0; i < InitAmountCoop; ++i)
@@ -130,7 +130,7 @@ int main()
 			{
 				unsigned int TempSize = Agents.size();
 				AliveAgents[i]->Score = Agent::StartScore;
-				Agent agent = AliveAgents[i]->ReturnCopy();
+				Agent agent = Agent(AliveAgents[i]);
 				Agents.push_back(agent);
 				AliveAgents.push_back(&Agents[TempSize]);
 			}
@@ -143,17 +143,17 @@ int main()
 		int AmountBogus = 0;
 		for (unsigned int i = 0; i < AliveAgents.size(); ++i)
 		{
-			switch ((*AliveAgents[i]).GetStrategy())
+			switch (AliveAgents[i]->GetStrategy())
 			{
 			case Agent::Strategy::Cooperator:
 				AmountCoop++;
-
+				break;
 			case Agent::Strategy::Deflector:
 				AmountDefl++;
-
+				break;
 			case Agent::Strategy::TFT:
 				AmountTFT++;
-
+				break;
 			case Agent::Strategy::Bogus:
 				AmountBogus++;
 

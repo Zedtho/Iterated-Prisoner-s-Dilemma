@@ -15,12 +15,12 @@ int InitAmountTFT;
 int InitAmountDefl;
 int AmountRounds;
 const float nMeetingsProportion = 1;
-const int LoserValue = -3;
-const int WinnerValue = 5;
+const int LoserValue = -2;
+const int WinnerValue = 4;
 const int CooperateValue = 3;
-const int DeflectorValue = -1;
+const int DeflectorValue = -2;
 const int DeathScore = 0;
-const int ReproduceScore = 20;
+const int ReproduceScore = 5;
 std::random_device dev;
 std::mt19937 rng(dev());
 
