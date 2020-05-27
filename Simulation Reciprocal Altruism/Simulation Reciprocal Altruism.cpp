@@ -17,7 +17,10 @@ int main()
 	std::cin >> InitAmountDefl;
 	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
 	std::cin >> AmountRounds;
-
+	DeflContainer.reserve(5 * InitAmountDefl);
+	CoopContainer.reserve(5 * InitAmountCoop);
+	TFTContainer.reserve(5 * InitAmountTFT);
+	Agents.reserve(10 * (InitAmountCoop + InitAmountDefl + InitAmountTFT));
 
 	//Initializes Agents and AliveAgents
 	//Seems to work
@@ -31,12 +34,14 @@ int main()
 		int arraySize = Agents.size();
 		for (int i = 0; i < InitAmountDefl; ++i)
 		{
-			Agents.push_back(&Deflector());
+			DeflContainer.push_back(Deflector());
+			Agents.push_back(&DeflContainer[i]);
 			AliveAgents.push_back(Agents[i + arraySize]);
 		}
 		arraySize = Agents.size();
 		for (int i = 0; i < InitAmountTFT; ++i)
 		{
+			TFTContainer.push_back(TFT());
 			Agents.push_back(&TFT());
 			AliveAgents.push_back(Agents[i + arraySize]);
 		}

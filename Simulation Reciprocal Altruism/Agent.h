@@ -23,8 +23,8 @@ public:
 	}
 	virtual bool WillCooperate(Agent* agent) { return 1; };
 	//The following two are only functions used by TFT, but has to be declared here to work. Seems suboptimal.
-	void RemoveNaughty(Agent* agent){};
-	void AddNaughty(Agent* agent){};
+	virtual void RemoveNaughty(Agent* agent){};
+	virtual void AddNaughty(Agent* agent){};
 	Agent ReturnCopy() { return *this;};
 protected:
 	Strategy strategy;

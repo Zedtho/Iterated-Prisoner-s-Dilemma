@@ -14,7 +14,7 @@ public:
 	}
 	void RemoveNaughty(Agent* agent);
 	TFT();
-	bool WillCooperate(Agent* agent)
+	bool WillCooperate(Agent* agent) override 
 	{
 		bool WillCooperate = true;
 		for (unsigned int i = 0; i < Naughtylist.size(); ++i)

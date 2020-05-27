@@ -6,7 +6,7 @@ class Deflector : public Agent
 {
 public:
 	Deflector();
-	bool WillCooperate(Agent* agent)
+	bool WillCooperate(Agent* agent) override
 	{
 		return false;
 	}
