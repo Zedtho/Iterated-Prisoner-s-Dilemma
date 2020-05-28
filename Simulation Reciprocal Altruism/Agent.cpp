@@ -37,9 +37,14 @@ bool Agent::WillCooperate(Agent* agent)
 			{
 				WillCooperate = false;
 
-				std::cout << "\n Naughty boi ";
+				
 			}
 		}
+		if (WillCooperate == false)
+		{
+			std::cout << "\n Naughty boi";
+		}
+		
 		break;
 	default: 
 		std::cout << "SHIT";
