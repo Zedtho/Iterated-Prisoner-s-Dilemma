@@ -43,12 +43,11 @@ int main()
 	//Round-Organizer
 	for (int Round = 0; Round < AmountRounds; ++Round)
 	{
+		std::uniform_int_distribution<int> distAlive(0, AliveAgents.size() - 1);
 		//Handles meetings
 		for (int i = 0; i < std::floor(AliveAgents.size()*nMeetingsProportion); ++i)
 		{
-			std::random_device rd;
-			std::mt19937 rng(rd());
-			std::uniform_int_distribution<int> distAlive(0, AliveAgents.size() - 1);
+			
 			int Check = distAlive(rng);
 			int Check2 = distAlive(rng);
 			int Check3 = distAlive(rng);
