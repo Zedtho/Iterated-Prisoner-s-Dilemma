@@ -21,8 +21,7 @@ const float CooperateValue = 1.0f;
 const float DeflectorValue = -1.0f;
 const float DeathScore = 0.0f;
 const float ReproduceScore = 100.0f;
-std::random_device rd;
-std::mt19937 rng(rd());
+
 
 
 std::vector<Agent> Agents;

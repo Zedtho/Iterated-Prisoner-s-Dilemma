@@ -21,19 +21,19 @@ int main()
 	Agents.reserve(10000*(InitAmountCoop + InitAmountDefl + InitAmountTFT));
 	//Initializes Agents and AliveAgents
 	//Seems to work
-		for (int i = 0; i < InitAmountCoop; ++i)
+	for (int i = 0; i < InitAmountCoop; ++i)
 		{
 			Agents.push_back(Agent(Agent::Strategy::Cooperator));
 			AliveAgents.push_back(&Agents[i]);
 		}
-		int arraySize = Agents.size();
-		for (int i = 0; i < InitAmountDefl; ++i)
+	int arraySize = Agents.size();
+	for (int i = 0; i < InitAmountDefl; ++i)
 		{
 			Agents.push_back(Agent(Agent::Strategy::Deflector));
 			AliveAgents.push_back(&Agents[i + arraySize]);
 		}
-		arraySize = Agents.size();
-		for (int i = 0; i < InitAmountTFT; ++i)
+	arraySize = Agents.size();
+	for (int i = 0; i < InitAmountTFT; ++i)
 		{
 			Agents.push_back(Agent(Agent::Strategy::TFT));
 			AliveAgents.push_back(&Agents[i + arraySize]);
@@ -43,6 +43,8 @@ int main()
 	//Round-Organizer
 	for (int Round = 0; Round < AmountRounds; ++Round)
 	{
+		std::random_device rd;
+		std::mt19937 rng(rd());
 		std::uniform_int_distribution<int> distAlive(0, AliveAgents.size() - 1);
 		//Handles meetings
 		for (int i = 0; i < std::floor(AliveAgents.size()*nMeetingsProportion); ++i)
