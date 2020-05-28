@@ -36,18 +36,18 @@ public:
 	Agent(Agent* agent);
 	void AddNaughty(Agent* agent)
 	{
-		/*bool AlreadyNaughty = false;
+		bool AlreadyNaughty = false;
 		for (unsigned int i = 0; i < Naughtylist.size(); ++i)
 		{
-			if (Naughtylist[i] = agent)
+			if (Naughtylist[i] == agent)
 			{
 				AlreadyNaughty = true;
 			}
 		}
-		if (AlreadyNaughty = false)
-		{*/
+		if (AlreadyNaughty == false)
+		{
 			Naughtylist.push_back(agent);
-		//}
+		}
 	}
 	void RemoveNaughty(Agent* agent)
 	{

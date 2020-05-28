@@ -191,7 +191,6 @@ int main()
 				break;
 			case Agent::Strategy::Bogus:
 				BogusScore += AliveAgents[i]->Score;
-
 			}
 		}
 		std::cout << "\n" << CoopScore << "/" << TFTScore << "/" << DeflectScore << "/" << BogusScore;
