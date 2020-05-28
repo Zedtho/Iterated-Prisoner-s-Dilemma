@@ -14,13 +14,17 @@ int InitAmountCoop;
 int InitAmountTFT;
 int InitAmountDefl;
 int AmountRounds;
-const float nMeetingsProportion = 1.0f;
-const float LoserValue = 2.0f;
-const float WinnerValue = 9.0f;
-const float CooperateValue = 6.0f;
-const float DeflectorValue = 3.0f;
+const float nMeetingsProportion = 0.5f;
+const float LoserValue = 0.0f;
+const float WinnerValue = 5.0f;
+const float CooperateValue = 3.0f;
+const float DeflectorValue = 1.0f;
 const float DeathScore = 0.0f;
 const float ReproduceScore = 100.0f;
+int nMeetingsCoop = 0;
+int nMeetingsTFT = 0;
+int nMeetingsDefect = 0;
+
 
 
 

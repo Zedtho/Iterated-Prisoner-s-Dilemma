@@ -8,7 +8,7 @@ Agent::Agent(Strategy strat)
 	Score = StartScore;
 }
 
-const float Agent::StartScore= 10.0f;
+const float Agent::StartScore= 0.0f;
 
 Agent::Agent(Agent* agent)
 {
@@ -40,10 +40,10 @@ bool Agent::WillCooperate(Agent* agent)
 				
 			}
 		}
-		if (WillCooperate == false)
+		/*if (WillCooperate == false)
 		{
 			std::cout << "\n Naughty boi";
-		}
+		}*/
 		
 		break;
 	default: 

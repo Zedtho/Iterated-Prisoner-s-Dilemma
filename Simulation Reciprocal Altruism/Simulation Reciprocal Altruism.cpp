@@ -65,7 +65,33 @@ int main()
 
 			bool WillFirstCoop = (AliveAgents[FirstCandidateNumber]->WillCooperate(AliveAgents[SecondCandidateNumber]));
 			bool WillSecondCoop = (AliveAgents[SecondCandidateNumber]->WillCooperate(AliveAgents[FirstCandidateNumber]));
+			//Tallies amount of meetings
+			switch (AliveAgents[FirstCandidateNumber]->GetStrategy())
+			{
+			case Agent::Strategy::Cooperator:
+				nMeetingsCoop++;
+				break;
+			case Agent::Strategy::TFT:
+				nMeetingsTFT++;
+				break;
+			case Agent::Strategy::Deflector:
+				nMeetingsDefect++;
+				break;
+			}
+			switch (AliveAgents[SecondCandidateNumber]->GetStrategy())
+			{
+			case Agent::Strategy::Cooperator:
+				nMeetingsCoop++;
+				break;
+			case Agent::Strategy::TFT:
+				nMeetingsTFT++;
+				break;
+			case Agent::Strategy::Deflector:
+				nMeetingsDefect++;
+				break;
+			}
 			//The actual meeting
+			
 			switch (WillFirstCoop)
 			{
 			case true:
@@ -120,7 +146,7 @@ int main()
 			}
 		}
 		//Handles deaths
-		for (unsigned int i = 0; i < AliveAgents.size(); ++i)
+		/*for (unsigned int i = 0; i < AliveAgents.size(); ++i)
 		{
 			if (AliveAgents[i]->GetScore() <= DeathScore)
 			{
@@ -130,7 +156,7 @@ int main()
 
 			}
 		}
-
+		*/
 		//Handles reproductions
 		/*for (unsigned int i = 0; i < AliveAgents.size(); ++i)
 		{
@@ -195,7 +221,8 @@ int main()
 		}
 		std::cout << "\n" << CoopScore << "/" << TFTScore << "/" << DeflectScore << "/" << BogusScore;
 	}
-	std::cout << "Thank you for using our simulation";
+	std::cout << "\n Thank you for using our simulation";
+	std::cout << "\n Moreover the amount of meetings each was \n C:" << nMeetingsCoop << "\n TFT:" << nMeetingsTFT << "\n D:" << nMeetingsDefect;
 	int WaitForInput;
 	std::cin >> WaitForInput;
 	return 0;
