@@ -33,10 +33,10 @@
     <ClInclude Include="Cooperator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Deflector.h">
+    <ClInclude Include="TFT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TFT.h">
+    <ClInclude Include="Defector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,9 +48,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cooperator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Deflector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Agent.cpp">

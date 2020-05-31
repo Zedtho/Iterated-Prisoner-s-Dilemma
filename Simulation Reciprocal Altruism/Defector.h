@@ -2,16 +2,15 @@
 #include "Agent.h"
 
 
-class Deflector : public Agent
+class Defector : public Agent
 {
 public:
-	Deflector();
+	Defector() {};
 	bool WillCooperate(Agent* agent) override
 	{
 		return false;
 	}
-	Deflector ReturnCopy()
-	{
-		return Deflector();
-	}
+	void Update(Agent* agent, bool agentChoice) override
+	{};
+	
 };

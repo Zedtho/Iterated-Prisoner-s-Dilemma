@@ -4,14 +4,12 @@
 class Cooperator : public Agent
 {
 public:
-	Cooperator();
-	
+	Cooperator(){};
 	bool WillCooperate(Agent* agent) override
 	{
 		return true;
 	}
-	Cooperator ReturnCopy()
-	{
-		return *this;
-	}
+	//Cooperators don't remember nuffin
+	void Update(Agent* agent, bool agentChoice) override {};
+
 };

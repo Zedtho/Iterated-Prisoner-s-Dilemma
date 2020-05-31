@@ -2,25 +2,27 @@
 #include <vector>
 class Agent
 {
-protected:
 	
 public:
 	Agent();
-	
+	int score = 0;
+
 	int GetScore()
 	{
 		return score;
 	}
-	virtual bool WillCooperate(Agent& agent) = 0;
-	virtual void Update(Agent& agent, bool Agentchoice) = 0;
+	virtual bool WillCooperate(Agent* agent) = 0;
+	virtual void Update(Agent* agent, bool Agentchoice) = 0;
+
 protected:
 
 	//Data
-	int score = 0;
 	struct Memory
 	{
-		std::vector<Agent*> Memory;
-		std::vector<bool> DidCooperate;
+		std::vector<Agent*> memory;
+		std::vector<bool> didCooperate;
+		unsigned int size() { return this->memory.size(); }
+		void AddEvent(Agent* agent, bool agentChoice);
 	};
 	Memory memory;
 

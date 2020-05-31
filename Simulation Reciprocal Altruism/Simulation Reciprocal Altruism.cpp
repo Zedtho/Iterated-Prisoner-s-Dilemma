@@ -13,8 +13,8 @@ int main()
 	std::cin >> InitAmountCoop;
 	std::cout << " \n" << "Insert the amount of starting Tit-for-tatters \n";
 	std::cin >> InitAmountTFT;
-	std::cout << " \n" << "Insert the amount of starting Deflectors \n";
-	std::cin >> InitAmountDefl;
+	std::cout << " \n" << "Insert the amount of starting Defectors \n";
+	std::cin >> InitAmountDef;
 	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
 	std::cin >> AmountRounds;
 	
@@ -26,9 +26,9 @@ int main()
 			Agents.push_back(new Cooperator);
 
 		}
-		for (int i = 0; i < InitAmountDefl; ++i)
+		for (int i = 0; i < InitAmountDef; ++i)
 		{
-			Agents.push_back(new Deflector);
+			Agents.push_back(new Defector);
 		}
 		for (int i = 0; i < InitAmountTFT; ++i)
 		{
@@ -47,62 +47,45 @@ int main()
 			unsigned int FirstCandidateNumber = rand() % Agents.size();
 			unsigned int SecondCandidateNumber = rand() % Agents.size();
 
-			while (FirstCandidateNumber == SecondCandidateNumber)
+			/*while (FirstCandidateNumber == SecondCandidateNumber)
 			{
 				SecondCandidateNumber = rand() % Agents.size();
-			}
+			}*/ //playing against itself is normally a possibility within game theory as well
 
 			bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 			bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
 			//The actual meeting
+
 			switch (WillFirstCoop)
 			{
 			case true:
 				if (WillSecondCoop == true)
 				{
-					Agents[FirstCandidateNumber]->Score += CooperateValue;
-					Agents[SecondCandidateNumber]->Score += CooperateValue;
+					Agents[FirstCandidateNumber]->score += CooperateValue;
+					Agents[SecondCandidateNumber]->score += CooperateValue;
 				}
 				else 
 				{
-					Agents[FirstCandidateNumber]->Score += LoserValue;
-					Agents[SecondCandidateNumber]->Score += WinnerValue;
+					Agents[FirstCandidateNumber]->score += LoserValue;
+					Agents[SecondCandidateNumber]->score += WinnerValue;
 				}
 				break;
 			case false:
 				if (WillSecondCoop == true)
 				{
-					Agents[FirstCandidateNumber]->Score += WinnerValue;
-					Agents[SecondCandidateNumber]->Score += LoserValue;
+					Agents[FirstCandidateNumber]->score += WinnerValue;
+					Agents[SecondCandidateNumber]->score += LoserValue;
 				}
 				else
 				{
-					Agents[FirstCandidateNumber]->Score += DeflectorValue;
-					Agents[SecondCandidateNumber]->Score += DeflectorValue;
+					Agents[FirstCandidateNumber]->score += DefectorValue;
+					Agents[SecondCandidateNumber]->score += DefectorValue;
 				}
 				break;
 			}
-			//Remembering system for TFTs
-			if (Agents[FirstCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
-			{
-				switch (WillSecondCoop)
-				{
-				case true:
-					Agents[FirstCandidateNumber]->RemoveNaughty(Agents[SecondCandidateNumber]);
-				case false:
-					Agents[FirstCandidateNumber]->AddNaughty(Agents[SecondCandidateNumber]);
-				}
-			}
-			if (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
-			{
-				switch (WillFirstCoop)
-				{
-				case true:
-					Agents[SecondCandidateNumber]->RemoveNaughty(Agents[FirstCandidateNumber]);
-				case false:
-					Agents[SecondCandidateNumber]->AddNaughty(Agents[FirstCandidateNumber]);
-				}
-			}
+			//Update strategies
+			Agents[FirstCandidateNumber]->Update(Agents[SecondCandidateNumber], WillSecondCoop);
+			Agents[SecondCandidateNumber]->Update(Agents[FirstCandidateNumber], WillFirstCoop);
 		}
 		
 		//Tally different types and output them
@@ -110,7 +93,7 @@ int main()
 		int AmountDefl = 0;
 		int AmountTFT = 0;
 		int AmountBogus = 0;
-		for (unsigned int i = 0; i < Agents.size(); ++i)
+		/*for (unsigned int i = 0; i < Agents.size(); ++i)
 		{
 			switch (Agents[i]->GetStrategy())
 			{
@@ -129,7 +112,7 @@ int main()
 			}
 
 
-		}
+		}*/ //use Albinopapa's stuff!
 		std::cout << AmountCoop << "/" << AmountTFT << "/" << AmountDefl << "/" << AmountBogus << "\n";
 	}
 	std::cout << "Thank you for using our simulation";

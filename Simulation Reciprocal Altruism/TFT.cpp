@@ -1,20 +1,43 @@
 #include "stdafx.h"
 #include "TFT.h"
 
-void TFT::RemoveNaughty(Agent* agent)
+void TFT::Update(Agent* agent, bool agentChoice)
 {
-	for (unsigned int i = 0; i < Naughtylist.size(); ++i)
+	bool isMemorized = false;
+	int index;
+	for( unsigned int i = 0; i < this->memory.size(); ++i)
 	{
-		if (Naughtylist[i] == agent)
+		if (memory.memory[i] == agent)
 		{
-			std::swap(Naughtylist[i], Naughtylist[Naughtylist.size() - 1]);
-			Naughtylist.pop_back();
+			isMemorized = true;
+			index = i;
 		}
+	}
+
+	if (isMemorized == true)
+	{
+		this->memory.didCooperate[index] = agentChoice;
+	}
+	else
+	{
+		memory.AddEvent(agent, agentChoice);
 	}
 }
 
 TFT::TFT() : Agent()
 {
-	strategy = Strategy::TFT;
-	Score = StartScore;
+	
+}
+
+bool TFT::WillCooperate(Agent * agent)
+{
+	bool willCooperate = true;
+	for (unsigned int i = 0; i < this->memory.size(); ++i)
+	{
+		if (this->memory.memory[i] == agent)
+		{
+			willCooperate = this->memory.didCooperate[i];
+		}
+	}
+	return willCooperate;
 }
