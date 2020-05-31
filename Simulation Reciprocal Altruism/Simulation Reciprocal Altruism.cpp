@@ -21,19 +21,7 @@ int main()
 
 	//Initializes Agents and Agents
 	//Seems to work
-		for (int i = 0; i < InitAmountCoop; ++i)
-		{
-			Agents.push_back(new Cooperator);
-
-		}
-		for (int i = 0; i < InitAmountDef; ++i)
-		{
-			Agents.push_back(new Defector);
-		}
-		for (int i = 0; i < InitAmountTFT; ++i)
-		{
-			Agents.push_back(new TFT);
-		}
+	InitializeAgents();
 	
 		
 
@@ -118,7 +106,26 @@ int main()
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
 	std::cin >> WaitForInput;
-	//DELETE STUFF FROM Agents, FREE THE HEAP
+	for (size_t i = 0; i < Agents.size(); i++)
+	{
+		delete Agents[i];
+	}
 	return 0;
 }
 
+void InitializeAgents()
+{
+	for (int i = 0; i < InitAmountCoop; ++i)
+	{
+		Agents.push_back(new Cooperator);
+
+	}
+	for (int i = 0; i < InitAmountDef; ++i)
+	{
+		Agents.push_back(new Defector);
+	}
+	for (int i = 0; i < InitAmountTFT; ++i)
+	{
+		Agents.push_back(new TFT);
+	}
+}

@@ -20,6 +20,6 @@ const int CooperateValue = 3;
 const int DefectorValue = -1;
 const int DeathScore = 0;
 const int ReproduceScore = 20;
-
+void InitializeAgents();
 std::vector<Agent*> Agents;
 
