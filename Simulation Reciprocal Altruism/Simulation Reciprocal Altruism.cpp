@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Simulation Reciprocal Altruism.h"
 #include<time.h>
+#include <random>
 
 
 int main()
@@ -18,9 +19,6 @@ int main()
 	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
 	std::cin >> AmountRounds;
 	
-
-	//Initializes Agents and Agents
-	//Seems to work
 	InitializeAgents();
 	
 		
@@ -28,17 +26,20 @@ int main()
 	//Round-Organizer
 	for (int Round = 0; Round < AmountRounds; ++Round)
 	{
+		std::random_device rd;
+		std::mt19937 rng(rd());
+		std::uniform_int_distribution<int> distAlive(0, Agents.size() - 1);
 		//Handles meetings
 		for (int i = 0; i < std::floor(Agents.size()*nMeetingsProportion); ++i)
 		{
 			srand((unsigned int)time(NULL));
-			unsigned int FirstCandidateNumber = rand() % Agents.size();
-			unsigned int SecondCandidateNumber = rand() % Agents.size();
+			unsigned int FirstCandidateNumber = distAlive(rng);
+			unsigned int SecondCandidateNumber = distAlive(rng);
 
-			/*while (FirstCandidateNumber == SecondCandidateNumber)
+			while (FirstCandidateNumber == SecondCandidateNumber)
 			{
 				SecondCandidateNumber = rand() % Agents.size();
-			}*/ //playing against itself is normally a possibility within game theory as well
+			} //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
 
 			bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 			bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
@@ -101,11 +102,17 @@ int main()
 
 
 		}*/ //use Albinopapa's stuff!
-		std::cout << AmountCoop << "/" << AmountTFT << "/" << AmountDefl << "/" << AmountBogus << "\n";
+		for(unsigned int i = 0; i < Agents.size(); ++i )
+		{
+			std::cout << Agents[i]->GetScore() << "/" ;
+
+		}
+		std::cout << "\n";
 	}
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
 	std::cin >> WaitForInput;
+	//Deinitializes the data
 	for (size_t i = 0; i < Agents.size(); i++)
 	{
 		delete Agents[i];
@@ -120,12 +127,12 @@ void InitializeAgents()
 		Agents.push_back(new Cooperator);
 
 	}
-	for (int i = 0; i < InitAmountDef; ++i)
-	{
-		Agents.push_back(new Defector);
-	}
 	for (int i = 0; i < InitAmountTFT; ++i)
 	{
 		Agents.push_back(new TFT);
+	}
+	for (int i = 0; i < InitAmountDef; ++i)
+	{
+		Agents.push_back(new Defector);
 	}
 }
