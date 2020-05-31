@@ -3,5 +3,4 @@
 
 Agent::Agent()
 {
-
 }

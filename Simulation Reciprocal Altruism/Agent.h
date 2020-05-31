@@ -2,31 +2,26 @@
 #include <vector>
 class Agent
 {
+protected:
+	
 public:
 	Agent();
-	enum Strategy
-	{
-		Cooperator,
-		TFT,
-		Deflector,
-		Bogus
-	};
-	static const int StartScore = 4;
-	int Score = StartScore;
-	Strategy GetStrategy()
-	{
-		return strategy;
-	}
+	
 	int GetScore()
 	{
-		return Score;
+		return score;
 	}
-	virtual bool WillCooperate(Agent* agent) { return 1; };
-	//The following two are only functions used by TFT, but has to be declared here to work. Seems suboptimal.
-	virtual void RemoveNaughty(Agent* agent){};
-	virtual void AddNaughty(Agent* agent){};
-	Agent ReturnCopy() { return *this;};
+	virtual bool WillCooperate(Agent& agent) = 0;
+	virtual void Update(Agent& agent, bool Agentchoice) = 0;
 protected:
-	Strategy strategy;
+
+	//Data
+	int score = 0;
+	struct Memory
+	{
+		std::vector<Agent*> Memory;
+		std::vector<bool> DidCooperate;
+	};
+	Memory memory;
 
 };
