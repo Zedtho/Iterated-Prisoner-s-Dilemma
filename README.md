@@ -18,4 +18,7 @@ As such, reciprocal altruism can be shown to be an effective strategy.
 
 This theory is one I wanted to check with a program for a biological paper I am writing for school.
 
-The most functional simulation so far is the branch "Merger"
+The most functional simulation so far is the branch "Score"
+
+Acknowledgements:
+This project would not have been possible without the extremely helpful ideas from Albinopapa and Slidy of the planetchili.net forum!
