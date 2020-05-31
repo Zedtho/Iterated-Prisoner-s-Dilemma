@@ -5,7 +5,7 @@
 class Defector : public Agent
 {
 public:
-	Defector() {};
+	Defector() { strat = Strategy::DEFECTOR; };
 	bool WillCooperate(Agent* agent) override
 	{
 		return false;

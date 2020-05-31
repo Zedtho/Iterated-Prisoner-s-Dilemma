@@ -21,5 +21,6 @@ const int DefectorValue = 1;
 const int DeathScore = 0;
 const int ReproduceScore = 20;
 void InitializeAgents();
+void InitializeInputs();
 std::vector<Agent*> Agents;
 

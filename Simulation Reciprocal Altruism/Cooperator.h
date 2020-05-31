@@ -4,7 +4,7 @@
 class Cooperator : public Agent
 {
 public:
-	Cooperator(){};
+	Cooperator() { strat = Strategy::COOPERATOR; };
 	bool WillCooperate(Agent* agent) override
 	{
 		return true;

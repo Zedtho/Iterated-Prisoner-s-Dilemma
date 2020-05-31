@@ -10,15 +10,8 @@
 int main()
 {
 	//Requests starting parameters of simulation.
-	std::cout << "Insert the amount of starting cooperators \n";
-	std::cin >> InitAmountCoop;
-	std::cout << " \n" << "Insert the amount of starting Tit-for-tatters \n";
-	std::cin >> InitAmountTFT;
-	std::cout << " \n" << "Insert the amount of starting Defectors \n";
-	std::cin >> InitAmountDef;
-	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
-	std::cin >> AmountRounds;
 	
+	InitializeInputs();
 	InitializeAgents();
 	
 		
@@ -36,10 +29,10 @@ int main()
 			unsigned int FirstCandidateNumber = distAlive(rng);
 			unsigned int SecondCandidateNumber = distAlive(rng);
 
-			while (FirstCandidateNumber == SecondCandidateNumber)
+			/*while (FirstCandidateNumber == SecondCandidateNumber)
 			{
 				SecondCandidateNumber = rand() % Agents.size();
-			} //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
+			}*/  //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
 
 			bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 			bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
@@ -48,7 +41,7 @@ int main()
 			switch (WillFirstCoop)
 			{
 			case true:
-				if (WillSecondCoop == true)
+				if (WillSecondCoop)
 				{
 					Agents[FirstCandidateNumber]->score += CooperateValue;
 					Agents[SecondCandidateNumber]->score += CooperateValue;
@@ -60,7 +53,7 @@ int main()
 				}
 				break;
 			case false:
-				if (WillSecondCoop == true)
+				if (WillSecondCoop)
 				{
 					Agents[FirstCandidateNumber]->score += WinnerValue;
 					Agents[SecondCandidateNumber]->score += LoserValue;
@@ -79,9 +72,8 @@ int main()
 		
 		//Tally different types and output them
 		int AmountCoop = 0;
-		int AmountDefl = 0;
+		int AmountDef = 0;
 		int AmountTFT = 0;
-		int AmountBogus = 0;
 		/*for (unsigned int i = 0; i < Agents.size(); ++i)
 		{
 			switch (Agents[i]->GetStrategy())
@@ -104,10 +96,20 @@ int main()
 		}*/ //use Albinopapa's stuff!
 		for(unsigned int i = 0; i < Agents.size(); ++i )
 		{
-			std::cout << Agents[i]->GetScore() << "/" ;
-
+			switch (Agents[i]->GetStrategy())
+			{
+			case Agent::Strategy::COOPERATOR:
+				AmountCoop += Agents[i]->GetScore();
+				break;
+			case Agent::Strategy::DEFECTOR:
+				AmountDef += Agents[i]->GetScore();
+				break;
+			case Agent::Strategy::TFT:
+				AmountTFT += Agents[i]->GetScore();
+				break;
+			}
 		}
-		std::cout << "\n";
+		std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef;
 	}
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
@@ -120,6 +122,17 @@ int main()
 	return 0;
 }
 
+void InitializeInputs()
+{
+	std::cout << "Insert the amount of starting cooperators \n";
+	std::cin >> InitAmountCoop;
+	std::cout << " \n" << "Insert the amount of starting Tit-for-tatters \n";
+	std::cin >> InitAmountTFT;
+	std::cout << " \n" << "Insert the amount of starting Defectors \n";
+	std::cin >> InitAmountDef;
+	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
+	std::cin >> AmountRounds;
+}
 void InitializeAgents()
 {
 	for (int i = 0; i < InitAmountCoop; ++i)

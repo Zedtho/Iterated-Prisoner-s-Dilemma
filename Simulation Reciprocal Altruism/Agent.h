@@ -6,14 +6,18 @@ class Agent
 public:
 	Agent();
 	int score = 0;
-
+	enum Strategy
+	{
+		COOPERATOR,
+		DEFECTOR,
+		TFT
+	};
 	int GetScore()
 	{
 		return score;
 	}
 	virtual bool WillCooperate(Agent* agent) = 0;
 	virtual void Update(Agent* agent, bool Agentchoice) = 0;
-
 protected:
 
 	//Data
@@ -25,5 +29,10 @@ protected:
 		void AddEvent(Agent* agent, bool agentChoice);
 	};
 	Memory memory;
+	
+	Strategy strat;
+
+public: 
+	Strategy GetStrategy() { return strat; }
 
 };

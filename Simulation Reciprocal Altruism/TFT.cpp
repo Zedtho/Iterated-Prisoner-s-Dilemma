@@ -24,11 +24,6 @@ void TFT::Update(Agent* agent, bool agentChoice)
 	}
 }
 
-TFT::TFT() : Agent()
-{
-	
-}
-
 bool TFT::WillCooperate(Agent * agent)
 {
 	bool willCooperate = true;
