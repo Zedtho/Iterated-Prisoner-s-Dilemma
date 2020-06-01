@@ -148,6 +148,7 @@
     <ClInclude Include="Agent.h" />
     <ClInclude Include="Cooperator.h" />
     <ClInclude Include="Defector.h" />
+    <ClInclude Include="CrossEye.h" />
     <ClInclude Include="Simulation Reciprocal Altruism.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -155,7 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Agent.cpp" />
-    <ClCompile Include="Cooperator.cpp" />
     <ClCompile Include="Simulation Reciprocal Altruism.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

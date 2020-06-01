@@ -36,3 +36,4 @@ bool TFT::WillCooperate(Agent * agent)
 	}
 	return willCooperate;
 }
+

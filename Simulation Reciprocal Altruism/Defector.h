@@ -12,5 +12,6 @@ public:
 	}
 	void Update(Agent* agent, bool agentChoice) override
 	{};
-	
+
 };
+

@@ -9,7 +9,7 @@ public:
 	{
 		return true;
 	}
-	//Cooperators don't remember nuffin
 	void Update(Agent* agent, bool agentChoice) override {};
-
+	
 };
+

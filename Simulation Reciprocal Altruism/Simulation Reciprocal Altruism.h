@@ -8,10 +8,12 @@
 #include "Cooperator.h"
 #include "Defector.h"
 #include "TFT.h"
+#include "CrossEye.h"
 
 int InitAmountCoop;
 int InitAmountTFT;
 int InitAmountDef;
+int InitAmountCrossEye;
 int AmountRounds;
 const float nMeetingsProportion = 0.5;
 const int LoserValue = 0;

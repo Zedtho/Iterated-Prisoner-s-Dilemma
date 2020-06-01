@@ -10,7 +10,5 @@ public:
 	void Update(Agent* agent, bool agentChoice);
 	TFT() { strat = Strategy::TFT; };
 	bool WillCooperate(Agent* agent) override;
-
-
 };
 

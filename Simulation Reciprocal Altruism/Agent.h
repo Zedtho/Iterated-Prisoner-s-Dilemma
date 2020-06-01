@@ -10,7 +10,8 @@ public:
 	{
 		COOPERATOR,
 		DEFECTOR,
-		TFT
+		TFT,
+		CROSSEYE
 	};
 	int GetScore()
 	{

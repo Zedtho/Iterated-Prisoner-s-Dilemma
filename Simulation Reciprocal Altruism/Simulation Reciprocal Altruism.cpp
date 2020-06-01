@@ -29,10 +29,10 @@ int main()
 			unsigned int FirstCandidateNumber = distAlive(rng);
 			unsigned int SecondCandidateNumber = distAlive(rng);
 
-			/*while (FirstCandidateNumber == SecondCandidateNumber)
+			while (FirstCandidateNumber == SecondCandidateNumber)
 			{
 				SecondCandidateNumber = rand() % Agents.size();
-			}*/  //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
+			}  //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
 
 			bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 			bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
@@ -74,6 +74,7 @@ int main()
 		int AmountCoop = 0;
 		int AmountDef = 0;
 		int AmountTFT = 0;
+		int AmountCrossEye = 0;
 		/*for (unsigned int i = 0; i < Agents.size(); ++i)
 		{
 			switch (Agents[i]->GetStrategy())
@@ -107,9 +108,12 @@ int main()
 			case Agent::Strategy::TFT:
 				AmountTFT += Agents[i]->GetScore();
 				break;
+			case Agent::Strategy::CROSSEYE:
+				AmountCrossEye += Agents[i]->GetScore();
+				break;
 			}
 		}
-		std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef;
+		std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef << "/" << AmountCrossEye;
 	}
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
@@ -130,6 +134,9 @@ void InitializeInputs()
 	std::cin >> InitAmountTFT;
 	std::cout << " \n" << "Insert the amount of starting Defectors \n";
 	std::cin >> InitAmountDef;
+	std::cout << " \n" << "Insert the amount of starting CrossEyes \n";
+	std::cin >> InitAmountCrossEye;
+
 	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
 	std::cin >> AmountRounds;
 }
@@ -147,5 +154,9 @@ void InitializeAgents()
 	for (int i = 0; i < InitAmountDef; ++i)
 	{
 		Agents.push_back(new Defector);
+	}
+	for (int i = 0; i < InitAmountCrossEye; ++i)
+	{
+		Agents.push_back(new CrossEye);
 	}
 }
