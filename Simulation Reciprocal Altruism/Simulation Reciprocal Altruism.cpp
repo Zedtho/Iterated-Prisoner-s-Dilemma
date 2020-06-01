@@ -15,13 +15,20 @@ int main()
 	InitializeAgents();
 
 	//Round-Organizer
-	for (int Round = 0; Round < AmountRounds; ++Round)
+	for (int Generation = 0; Generation < AmountGenerations; ++Generation)
 	{
-		Meet();
-		TallyAndOutput();
+
+
+		for (int Round = 0; Round < AmountRounds; ++Round)
+		{
+			Meet();
+			TallyAndOutput();
+		}
+
+		//Calculate who was most successful, and distribute new guys accordingly.
+
 	}
-	
-	std::cout << "Thank you for using our simulation";
+	std::cout << "\n Thank you for using our simulation";
 	int WaitForInput;
 	std::cin >> WaitForInput;
 	
@@ -46,8 +53,10 @@ void InitializeInputs()
 	std::cin >> InitAmountTF2T;
 
 
-	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
+	std::cout << " \n" << "How many rounds should every generation have? \n";
 	std::cin >> AmountRounds;
+	std::cout << "\n" << "How many total generations until the simulation terminates? \n";
+	std::cin >> AmountGenerations;
 }
 void InitializeAgents()
 {

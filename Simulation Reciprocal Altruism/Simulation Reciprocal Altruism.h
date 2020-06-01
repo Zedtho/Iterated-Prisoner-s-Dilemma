@@ -19,6 +19,7 @@ std::random_device rd;
 std::mt19937 rng(rd());
 
 int AmountRounds;
+int AmountGenerations;
 const float nMeetingsProportion = 0.5;
 const int suckersPayoff = 0;
 const int temptation = 5;
