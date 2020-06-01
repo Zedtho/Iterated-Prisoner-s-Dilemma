@@ -15,18 +15,20 @@ int InitAmountTFT;
 int InitAmountDef;
 int InitAmountCrossEye;
 int InitAmountTF2T;
+std::random_device rd;
+std::mt19937 rng(rd());
 
 int AmountRounds;
 const float nMeetingsProportion = 0.5;
 const int suckersPayoff = 0;
 const int temptation = 5;
-//Both cooperate:
 const int reward = 3;
-//Both defect:
 const int punishment = 1;
 const int DeathScore = 0;
 const int ReproduceScore = 20;
 void InitializeAgents();
 void InitializeInputs();
+void TallyAndOutput();
+void Meet();
 std::vector<Agent*> Agents;
 

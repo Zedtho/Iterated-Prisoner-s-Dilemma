@@ -13,97 +13,18 @@ int main()
 
 	InitializeInputs();
 	InitializeAgents();
-	
-		
 
 	//Round-Organizer
 	for (int Round = 0; Round < AmountRounds; ++Round)
 	{
-		std::random_device rd;
-		std::mt19937 rng(rd());
-		std::uniform_int_distribution<int> distAlive(0, Agents.size() - 1);
-		//Handles meetings
-		for (int i = 0; i < std::floor(Agents.size()*nMeetingsProportion); ++i)
-		{
-			srand((unsigned int)time(NULL));
-			unsigned int FirstCandidateNumber = distAlive(rng);
-			unsigned int SecondCandidateNumber = distAlive(rng);
-
-			while (FirstCandidateNumber == SecondCandidateNumber)
-			{
-				SecondCandidateNumber = rand() % Agents.size();
-			}  //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
-
-			bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
-			bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
-			//The actual meeting
-
-			switch (WillFirstCoop)
-			{
-			case true:
-				if (WillSecondCoop)
-				{
-					Agents[FirstCandidateNumber]->score += reward;
-					Agents[SecondCandidateNumber]->score += reward;
-				}
-				else 
-				{
-					Agents[FirstCandidateNumber]->score += suckersPayoff;
-					Agents[SecondCandidateNumber]->score += temptation;
-				}
-				break;
-			case false:
-				if (WillSecondCoop)
-				{
-					Agents[FirstCandidateNumber]->score += temptation;
-					Agents[SecondCandidateNumber]->score += suckersPayoff;
-				}
-				else
-				{
-					Agents[FirstCandidateNumber]->score += punishment;
-					Agents[SecondCandidateNumber]->score += punishment;
-				}
-				break;
-			}
-			//Update strategies
-			Agents[FirstCandidateNumber]->Update(Agents[SecondCandidateNumber], WillSecondCoop);
-			Agents[SecondCandidateNumber]->Update(Agents[FirstCandidateNumber], WillFirstCoop);
-		}
-		//Feel like some static thing should work here
-		int AmountCoop = 0;
-		int AmountDef = 0;
-		int AmountTFT = 0;
-		int AmountCrossEye = 0;
-		int AmountTF2T = 0;
-		
-		for(unsigned int i = 0; i < Agents.size(); ++i )
-		{
-			switch (Agents[i]->GetStrategy())
-			{
-			case Agent::Strategy::COOPERATOR:
-				AmountCoop += Agents[i]->GetScore();
-				break;
-			case Agent::Strategy::DEFECTOR:
-				AmountDef += Agents[i]->GetScore();
-				break;
-			case Agent::Strategy::TFT:
-				AmountTFT += Agents[i]->GetScore();
-				break;
-			case Agent::Strategy::CROSSEYE:
-				AmountCrossEye += Agents[i]->GetScore();
-				break;
-			case Agent::Strategy::TF2T:
-				AmountTF2T += Agents[i]->GetScore();
-			}
-		}
-		std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef << "/" << AmountCrossEye << "/" << AmountTF2T;
+		Meet();
+		TallyAndOutput();
 	}
 	
-	//Post-simulation
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
 	std::cin >> WaitForInput;
-	//Deinitializes the data
+	
 	for (size_t i = 0; i < Agents.size(); i++)
 	{
 		delete Agents[i];
@@ -150,5 +71,85 @@ void InitializeAgents()
 	for (int i = 0; i < InitAmountTF2T; ++i)
 	{
 		Agents.push_back(new TF2T);
+	}
+}
+void TallyAndOutput()
+{
+	int AmountCoop = 0;
+	int AmountDef = 0;
+	int AmountTFT = 0;
+	int AmountCrossEye = 0;
+	int AmountTF2T = 0;
+	for (unsigned int i = 0; i < Agents.size(); ++i)
+	{
+		switch (Agents[i]->GetStrategy())
+		{
+		case Agent::Strategy::COOPERATOR:
+			AmountCoop += Agents[i]->GetScore();
+			break;
+		case Agent::Strategy::DEFECTOR:
+			AmountDef += Agents[i]->GetScore();
+			break;
+		case Agent::Strategy::TFT:
+			AmountTFT += Agents[i]->GetScore();
+			break;
+		case Agent::Strategy::CROSSEYE:
+			AmountCrossEye += Agents[i]->GetScore();
+			break;
+		case Agent::Strategy::TF2T:
+			AmountTF2T += Agents[i]->GetScore();
+
+		}
+	}
+	std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef << "/" << AmountCrossEye << "/" << AmountTF2T;
+}
+void Meet()
+{
+	std::uniform_int_distribution<int> distAlive(0, Agents.size() - 1);
+	for (int i = 0; i < std::floor(Agents.size()*nMeetingsProportion); ++i)
+	{
+		srand((unsigned int)time(NULL));
+		unsigned int FirstCandidateNumber = distAlive(rng);
+		unsigned int SecondCandidateNumber = distAlive(rng);
+
+		while (FirstCandidateNumber == SecondCandidateNumber)
+		{
+			SecondCandidateNumber = rand() % Agents.size();
+		}  //playing against itself is normally a possibility within game theory as well, but it may mess up some of the code
+
+		bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
+		bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
+
+		//The actual meeting
+		switch (WillFirstCoop)
+		{
+		case true:
+			if (WillSecondCoop)
+			{
+				Agents[FirstCandidateNumber]->score += reward;
+				Agents[SecondCandidateNumber]->score += reward;
+			}
+			else
+			{
+				Agents[FirstCandidateNumber]->score += suckersPayoff;
+				Agents[SecondCandidateNumber]->score += temptation;
+			}
+			break;
+		case false:
+			if (WillSecondCoop)
+			{
+				Agents[FirstCandidateNumber]->score += temptation;
+				Agents[SecondCandidateNumber]->score += suckersPayoff;
+			}
+			else
+			{
+				Agents[FirstCandidateNumber]->score += punishment;
+				Agents[SecondCandidateNumber]->score += punishment;
+			}
+			break;
+		}
+		//Update strategies
+		Agents[FirstCandidateNumber]->Update(Agents[SecondCandidateNumber], WillSecondCoop);
+		Agents[SecondCandidateNumber]->Update(Agents[FirstCandidateNumber], WillFirstCoop);
 	}
 }
