@@ -1,14 +1,10 @@
 #pragma once
-
 #include "Agent.h"
-
-
-class TFT : public Agent
+class TF2T: public Agent
 {
-	
 public:
 	void Update(Agent* agent, bool agentChoice) override;
-	TFT() { strat = Strategy::TFT; };
+	TF2T() { strat = Strategy::TF2T; };
 	bool WillCooperate(Agent* agent) override;
-};
 
+};

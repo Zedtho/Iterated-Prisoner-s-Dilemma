@@ -11,7 +11,8 @@ public:
 		COOPERATOR,
 		DEFECTOR,
 		TFT,
-		CROSSEYE
+		CROSSEYE,
+		TF2T
 	};
 	int GetScore()
 	{

@@ -10,7 +10,7 @@
 int main()
 {
 	//Requests starting parameters of simulation.
-	
+
 	InitializeInputs();
 	InitializeAgents();
 	
@@ -43,25 +43,25 @@ int main()
 			case true:
 				if (WillSecondCoop)
 				{
-					Agents[FirstCandidateNumber]->score += CooperateValue;
-					Agents[SecondCandidateNumber]->score += CooperateValue;
+					Agents[FirstCandidateNumber]->score += reward;
+					Agents[SecondCandidateNumber]->score += reward;
 				}
 				else 
 				{
-					Agents[FirstCandidateNumber]->score += LoserValue;
-					Agents[SecondCandidateNumber]->score += WinnerValue;
+					Agents[FirstCandidateNumber]->score += suckersPayoff;
+					Agents[SecondCandidateNumber]->score += temptation;
 				}
 				break;
 			case false:
 				if (WillSecondCoop)
 				{
-					Agents[FirstCandidateNumber]->score += WinnerValue;
-					Agents[SecondCandidateNumber]->score += LoserValue;
+					Agents[FirstCandidateNumber]->score += temptation;
+					Agents[SecondCandidateNumber]->score += suckersPayoff;
 				}
 				else
 				{
-					Agents[FirstCandidateNumber]->score += DefectorValue;
-					Agents[SecondCandidateNumber]->score += DefectorValue;
+					Agents[FirstCandidateNumber]->score += punishment;
+					Agents[SecondCandidateNumber]->score += punishment;
 				}
 				break;
 			}
@@ -69,32 +69,13 @@ int main()
 			Agents[FirstCandidateNumber]->Update(Agents[SecondCandidateNumber], WillSecondCoop);
 			Agents[SecondCandidateNumber]->Update(Agents[FirstCandidateNumber], WillFirstCoop);
 		}
-		
-		//Tally different types and output them
+		//Feel like some static thing should work here
 		int AmountCoop = 0;
 		int AmountDef = 0;
 		int AmountTFT = 0;
 		int AmountCrossEye = 0;
-		/*for (unsigned int i = 0; i < Agents.size(); ++i)
-		{
-			switch (Agents[i]->GetStrategy())
-			{
-			case Agent::Strategy::Cooperator:
-				AmountCoop++;
-
-			case Agent::Strategy::Deflector:
-				AmountDefl++;
-
-			case Agent::Strategy::TFT:
-				AmountTFT++;
-
-			case Agent::Strategy::Bogus:
-				AmountBogus++;
-
-			}
-
-
-		}*/ //use Albinopapa's stuff!
+		int AmountTF2T = 0;
+		
 		for(unsigned int i = 0; i < Agents.size(); ++i )
 		{
 			switch (Agents[i]->GetStrategy())
@@ -111,10 +92,14 @@ int main()
 			case Agent::Strategy::CROSSEYE:
 				AmountCrossEye += Agents[i]->GetScore();
 				break;
+			case Agent::Strategy::TF2T:
+				AmountTF2T += Agents[i]->GetScore();
 			}
 		}
-		std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef << "/" << AmountCrossEye;
+		std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef << "/" << AmountCrossEye << "/" << AmountTF2T;
 	}
+	
+	//Post-simulation
 	std::cout << "Thank you for using our simulation";
 	int WaitForInput;
 	std::cin >> WaitForInput;
@@ -136,6 +121,9 @@ void InitializeInputs()
 	std::cin >> InitAmountDef;
 	std::cout << " \n" << "Insert the amount of starting CrossEyes \n";
 	std::cin >> InitAmountCrossEye;
+	std::cout << " \n" << "Insert the amount of starting Tit-for-two-tatters \n";
+	std::cin >> InitAmountTF2T;
+
 
 	std::cout << " \n" << "Finally, how many days should this simulation go for? \n";
 	std::cin >> AmountRounds;
@@ -158,5 +146,9 @@ void InitializeAgents()
 	for (int i = 0; i < InitAmountCrossEye; ++i)
 	{
 		Agents.push_back(new CrossEye);
+	}
+	for (int i = 0; i < InitAmountTF2T; ++i)
+	{
+		Agents.push_back(new TF2T);
 	}
 }
