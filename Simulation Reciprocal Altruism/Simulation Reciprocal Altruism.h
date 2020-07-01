@@ -17,7 +17,11 @@ int InitAmountCrossEye;
 int InitAmountTF2T;
 std::random_device rd;
 std::mt19937 rng(rd());
-
+struct Result
+{
+	Agent::Strategy strategy;
+	int score;
+};
 int AmountRounds;
 int AmountGenerations;
 const float nMeetingsProportion = 0.5;
@@ -31,5 +35,6 @@ void InitializeAgents();
 void InitializeInputs();
 void TallyAndOutput();
 void Meet();
+void KillOff();
 std::vector<Agent*> Agents;
 
