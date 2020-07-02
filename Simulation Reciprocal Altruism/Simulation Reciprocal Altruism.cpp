@@ -205,3 +205,15 @@ void KillOff()
 		delete Agents[i];
 	}
 }
+int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
+{
+	int tally = 0;
+	for (int i = 0; i < agents.size(); ++i)
+	{
+		if (agents[i]->GetStrategy() == strat)
+		{
+			tally++;
+		}
+	}
+	return tally;
+}

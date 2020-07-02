@@ -15,6 +15,7 @@ int InitAmountTFT;
 int InitAmountDef;
 int InitAmountCrossEye;
 int InitAmountTF2T;
+const float CovarianceBetweenTFT = 0.5;
 std::random_device rd;
 std::mt19937 rng(rd());
 struct Result
@@ -31,10 +32,12 @@ const int reward = 3;
 const int punishment = 1;
 const int DeathScore = 0;
 const int ReproduceScore = 20;
+std::vector<Agent*> Agents;
+
 void InitializeAgents();
 void InitializeInputs();
 void TallyAndOutput();
 void Meet();
 void KillOff();
-std::vector<Agent*> Agents;
+int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 
