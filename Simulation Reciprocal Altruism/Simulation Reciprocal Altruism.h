@@ -39,5 +39,5 @@ void InitializeInputs();
 void TallyAndOutput();
 void Meet();
 void KillOff();
-int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
+int TallyType(Agent::Strategy strat, std::vector<Agent*> agents);
 

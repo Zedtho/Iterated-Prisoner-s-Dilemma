@@ -77,16 +77,12 @@ int main()
 
 void InitializeInputs()
 {
-	std::cout << "Insert the amount of starting cooperators \n";
-	std::cin >> InitAmountCoop;
+	
 	std::cout << " \n" << "Insert the amount of starting Tit-for-tatters \n";
 	std::cin >> InitAmountTFT;
 	std::cout << " \n" << "Insert the amount of starting Defectors \n";
 	std::cin >> InitAmountDef;
-	std::cout << " \n" << "Insert the amount of starting CrossEyes \n";
-	std::cin >> InitAmountCrossEye;
-	std::cout << " \n" << "Insert the amount of starting Tit-for-two-tatters \n";
-	std::cin >> InitAmountTF2T;
+	
 
 
 	std::cout << " \n" << "How many rounds should every generation have? \n";
@@ -146,7 +142,7 @@ void TallyAndOutput()
 
 		}
 	}
-	std::cout << "\n" << AmountCoop << "/" << AmountTFT << "/" << AmountDef << "/" << AmountCrossEye << "/" << AmountTF2T;
+	std::cout << "\n"  "/" << AmountTFT / TallyType(Agent::Strategy::TFT, Agents) << "/" << AmountDef / TallyType(Agent::Strategy::DEFECTOR, Agents);
 }
 void Meet()
 {
@@ -161,7 +157,19 @@ void Meet()
 		{
 			SecondCandidateNumber = rand() % Agents.size();
 		}  //playing against itself is normally a possibility within game theory as well, but personally I find it makes no sense. It gives rather unintuitive results.
+		//Choose which type it is for this round (only necessary if it is not one of the invaded
+		while (Agents[FirstCandidateNumber]->GetStrategy() == Agent::Strategy::TFT || Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
+		{
+			if (rand() / Agents.size() < CovarianceBetweenTFT)
+			{
 
+			}
+			else 
+			{
+				FirstCandidateNumber = rand() % Agents.size();
+				SecondCandidateNumber = rand() % Agents.size();
+			}
+		}
 		bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 		bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
 
@@ -208,7 +216,7 @@ void KillOff()
 int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 {
 	int tally = 0;
-	for (int i = 0; i < agents.size(); ++i)
+	for (unsigned int i = 0; i < agents.size(); ++i)
 	{
 		if (agents[i]->GetStrategy() == strat)
 		{
@@ -217,3 +225,4 @@ int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 	}
 	return tally;
 }
+
