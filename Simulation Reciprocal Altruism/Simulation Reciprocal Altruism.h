@@ -19,8 +19,7 @@ struct Result
 	Agent::Strategy strategy;
 	int score;
 };
-int AmountRounds;
-int AmountGenerations;
+
 
 std::vector<Agent*> Agents;
 
@@ -30,4 +29,4 @@ void TallyAndOutput();
 void Meet();
 void KillOff();
 int TallyType(Agent::Strategy strat, std::vector<Agent*> agents);
-
+bool YesOrNo(float chance);

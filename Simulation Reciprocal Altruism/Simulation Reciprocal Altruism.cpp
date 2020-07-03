@@ -153,11 +153,21 @@ void Meet()
 		unsigned int FirstCandidateNumber = distAlive(rng);
 		unsigned int SecondCandidateNumber = distAlive(rng);
 
-		while (FirstCandidateNumber == SecondCandidateNumber)
-		{
-			SecondCandidateNumber = rand() % Agents.size();
-		}  //playing against itself is normally a possibility within game theory as well, but personally I find it makes no sense. It gives rather unintuitive results.
+		//playing against itself is normally a possibility within game theory as well, but personally I find it makes no sense. It gives rather unintuitive results.
 		//Choose which type it is for this round (only necessary if it is not one of the invaded
+		switch (Agents[FirstCandidateNumber]->GetStrategy())
+		{
+		case Agent::Strategy::TFT:
+			bool Cluster = YesOrNo(CovarianceBetweenTFT);
+			if (Cluster)
+			{
+				while(Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
+				{
+					SecondCandidateNumber = rand() % Agents.size();
+				}
+			}
+			break;
+		}
 		while (Agents[FirstCandidateNumber]->GetStrategy() == Agent::Strategy::TFT || Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
 		{
 			if (rand() / Agents.size() < CovarianceBetweenTFT)
@@ -225,4 +235,15 @@ int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 	}
 	return tally;
 }
+bool YesOrNo(float chance)
+{
+	//check if chance is valid
+	if (chance > 1 || chance < 0)
+	{
+		std::cout << "fuck";
 
+	}
+	return rand() % 100 < (chance * 100);
+
+	
+}
