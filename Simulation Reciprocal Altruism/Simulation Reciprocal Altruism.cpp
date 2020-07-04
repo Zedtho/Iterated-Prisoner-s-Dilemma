@@ -155,10 +155,10 @@ void Meet()
 
 		//playing against itself is normally a possibility within game theory as well, but personally I find it makes no sense. It gives rather unintuitive results.
 		//Choose which type it is for this round (only necessary if it is not one of the invaded
+		bool Cluster = YesOrNo(ClusteringCoefficient);
 		switch (Agents[FirstCandidateNumber]->GetStrategy())
 		{
 		case Agent::Strategy::TFT:
-			bool Cluster = YesOrNo(CovarianceBetweenTFT);
 			if (Cluster)
 			{
 				while(Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
@@ -166,20 +166,25 @@ void Meet()
 					SecondCandidateNumber = rand() % Agents.size();
 				}
 			}
+			else
+			{
+				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
+				{
+					SecondCandidateNumber = rand() % Agents.size();
+				}
+			}
+			break;
+		default:
+			if (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT && Cluster)
+			{
+				while (Agents[FirstCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
+				{
+					FirstCandidateNumber = rand() % Agents.size();
+				}
+			}
 			break;
 		}
-		while (Agents[FirstCandidateNumber]->GetStrategy() == Agent::Strategy::TFT || Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
-		{
-			if (rand() / Agents.size() < CovarianceBetweenTFT)
-			{
-
-			}
-			else 
-			{
-				FirstCandidateNumber = rand() % Agents.size();
-				SecondCandidateNumber = rand() % Agents.size();
-			}
-		}
+		
 		bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 		bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
 
