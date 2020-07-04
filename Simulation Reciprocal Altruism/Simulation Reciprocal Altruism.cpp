@@ -232,6 +232,7 @@ void Statistics()
 		InvaderSum += Scorecard[i].InvaderScore;
 		NativeSum += Scorecard[i].NativeScore;
 	}
+	//What's going on here
 	InvaderMean = InvaderSum / float(InitAmountTFT);
 	NativeMean = NativeSum / float(InitAmountDef);
 	float InvaderSumSquares = 0;
