@@ -26,11 +26,10 @@ std::vector<Result> Scorecard;
 //Statistics
 float InvaderSumPopRep = 0; //sum of all the scores of the invaders over different repetitions
 float NativeSumPopRep = 0; //sum of all the scores of the natives over different repetitions
-float InvaderMean = 0;
-float NativeMean = 0;
 float InvaderStandardDeviation;
 float NativeStandardDeviation;
-
+float InvaderMean;
+float NativeMean;
 
 
 void InitializeAgents();

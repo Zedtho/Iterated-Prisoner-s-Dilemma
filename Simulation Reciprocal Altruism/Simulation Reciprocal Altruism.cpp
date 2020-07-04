@@ -238,15 +238,17 @@ void Statistics()
 	//Calculate mean - error here
 	float InvaderSumPopMean = InvaderSumPopRep / Scorecard.size();
 	float NativeSumPopMean = NativeSumPopRep / Scorecard.size();
-	InvaderMean = InvaderSumPopMean / float(InitAmountTFT) ;
-	NativeMean = NativeSumPopMean / float(InitAmountDef);
+	float Temp = InvaderSumPopRep / InitAmountTFT;
+	std::cout << Temp;
+	InvaderMean = InvaderSumPopMean / ((float)InitAmountTFT);
+	NativeMean = NativeSumPopMean / ((float)InitAmountDef);
 	//Calculate standard deviation
 	float InvaderSumSquares = 0;
 	float NativeSumSquares = 0;
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
-		InvaderSumSquares += (Scorecard[i].InvaderScore - InvaderMean)*(Scorecard[i].InvaderScore - InvaderMean);
-		NativeSumSquares += (Scorecard[i].NativeScore - NativeMean)*(Scorecard[i].NativeScore - NativeMean);
+		InvaderSumSquares += (Scorecard[i].InvaderScore/InitAmountTFT  - InvaderMean)*(Scorecard[i].InvaderScore / InitAmountTFT - InvaderMean);
+		NativeSumSquares += (Scorecard[i].NativeScore/InitAmountDef - NativeMean)*(Scorecard[i].NativeScore/InitAmountDef - NativeMean);
 	}
 
 	InvaderStandardDeviation = sqrt(InvaderSumSquares / Scorecard.size());
