@@ -24,8 +24,8 @@ struct Result
 std::vector<Agent*> Agents;
 std::vector<Result> Scorecard;
 //Statistics
-float InvaderSum = 0;
-float NativeSum = 0;
+float InvaderSumPopRep = 0; //sum of all the scores of the invaders over different repetitions
+float NativeSumPopRep = 0; //sum of all the scores of the natives over different repetitions
 float InvaderMean = 0;
 float NativeMean = 0;
 float InvaderStandardDeviation;

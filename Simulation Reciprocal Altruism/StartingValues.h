@@ -8,7 +8,7 @@ int InitAmountTF2T = 0;
 const float ClusteringCoefficient = 0.0f; // should be between 0 and 1, it's the chance a TFT will meet ANY other TFT - possible problem as covariance does not scale but okay
 const float nMeetingsProportion = 0.5; //(amount of meetings per round)/(amount of characters)
 int AmountRounds = 1000;
-int AmountRepetitions = 1;
+int AmountRepetitions = 10;
 
 // Prisoner's dilemma
 const int suckersPayoff = 0;

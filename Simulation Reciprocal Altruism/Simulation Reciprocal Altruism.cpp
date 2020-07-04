@@ -43,6 +43,7 @@ int main()
 		Scorecard.push_back(temp);
 
 		KillOff();
+		std::cout << "I killed";
 	}
 	
 	Statistics();
@@ -212,6 +213,7 @@ void KillOff()
 	{
 		delete Agents[i];
 	}
+	Agents.clear();
 }
 int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 {
@@ -227,14 +229,18 @@ int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 }
 void Statistics()
 {
+	//Why does it go through this loop 5 times?
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
-		InvaderSum += Scorecard[i].InvaderScore;
-		NativeSum += Scorecard[i].NativeScore;
+		InvaderSumPopRep += Scorecard[i].InvaderScore;
+		NativeSumPopRep += Scorecard[i].NativeScore;
 	}
-	//What's going on here
-	InvaderMean = InvaderSum / float(InitAmountTFT);
-	NativeMean = NativeSum / float(InitAmountDef);
+	//Calculate mean - error here
+	float InvaderSumPopMean = InvaderSumPopRep / Scorecard.size();
+	float NativeSumPopMean = NativeSumPopRep / Scorecard.size();
+	InvaderMean = InvaderSumPopMean / float(InitAmountTFT) ;
+	NativeMean = NativeSumPopMean / float(InitAmountDef);
+	//Calculate standard deviation
 	float InvaderSumSquares = 0;
 	float NativeSumSquares = 0;
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
