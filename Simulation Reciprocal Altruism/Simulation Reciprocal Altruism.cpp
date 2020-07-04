@@ -14,9 +14,7 @@ int main()
 	InitializeInputs();
 
 
-	//Round-Organizer
-	for (int Generation = 0; Generation < AmountGenerations; ++Generation)
-	{
+	
 		InitializeAgents();
 		srand((unsigned int)time(NULL));
 		for (int Round = 0; Round < AmountRounds; ++Round)
@@ -26,6 +24,7 @@ int main()
 		}
 
 		//Calculate who was most successful, and distribute new guys accordingly.
+		//Moran process is a good idea.
 		int FinalAmountCoop = 0;
 		int FinalAmountDef = 0;
 		int FinalAmountTFT = 0;
@@ -53,6 +52,8 @@ int main()
 			}
 		}
 		
+		
+		
 		/*const int CumulativeScore = FinalAmountCoop + FinalAmountDef + FinalAmountTFT + FinalAmountCrossEye + FinalAmountTF2T;
 		InitAmountCoop = std::floor(FinalAmountCoop / CumulativeScore);
 		InitAmountDef = std::floor(FinalAmountDef / CumulativeScore);
@@ -64,7 +65,6 @@ int main()
 			InitAmountCoop++; //Find a better way to do that
 		}
 		KillOff();*/
-	}
 	std::cout << "\n Final amount of agents of each type is: \n" << InitAmountCoop << "/" << InitAmountTFT << "/" <<
 		InitAmountDef << "/" << InitAmountCrossEye << "/" << InitAmountTF2T;
 	std::cout << "\n Thank you for using our simulation";
