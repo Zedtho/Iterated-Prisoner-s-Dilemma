@@ -10,68 +10,52 @@
 int main()
 {
 	//Requests starting parameters of simulation.
-
 	InitializeInputs();
 
-
-	
+	srand((unsigned int)time(NULL));
+	for(unsigned int Repetition = 0; Repetition < AmountRepetitions; ++Repetition)
+	{
 		InitializeAgents();
-		srand((unsigned int)time(NULL));
 		for (int Round = 0; Round < AmountRounds; ++Round)
 		{
 			Meet();
 			TallyAndOutput();
 		}
-
-		//Calculate who was most successful, and distribute new guys accordingly.
-		//Moran process is a good idea.
-		int FinalAmountCoop = 0;
-		int FinalAmountDef = 0;
-		int FinalAmountTFT = 0;
-		int FinalAmountCrossEye = 0;
-		int FinalAmountTF2T = 0;
+		
+		float AmountDef = 0;
+		float AmountTFT = 0;
 		for (unsigned int i = 0; i < Agents.size(); ++i)
 		{
 			switch (Agents[i]->GetStrategy())
 			{
-			case Agent::Strategy::COOPERATOR:
-				FinalAmountCoop += Agents[i]->GetScore();
-				break;
 			case Agent::Strategy::DEFECTOR:
-				FinalAmountDef += Agents[i]->GetScore();
+				AmountDef += Agents[i]->GetScore();
 				break;
 			case Agent::Strategy::TFT:
-				FinalAmountTFT += Agents[i]->GetScore();
+				AmountTFT += Agents[i]->GetScore();
 				break;
-			case Agent::Strategy::CROSSEYE:
-				FinalAmountCrossEye += Agents[i]->GetScore();
-				break;
-			case Agent::Strategy::TF2T:
-				FinalAmountTF2T += Agents[i]->GetScore();
-
 			}
 		}
+		Result temp;
+		temp.NativeScore = AmountDef;
+		temp.InvaderScore = AmountTFT;
 		
-		
-		
-		/*const int CumulativeScore = FinalAmountCoop + FinalAmountDef + FinalAmountTFT + FinalAmountCrossEye + FinalAmountTF2T;
-		InitAmountCoop = std::floor(FinalAmountCoop / CumulativeScore);
-		InitAmountDef = std::floor(FinalAmountDef / CumulativeScore);
-		InitAmountTFT = std::floor(FinalAmountTFT / CumulativeScore);
-		InitAmountCrossEye = std::floor(FinalAmountCrossEye / CumulativeScore);
-		InitAmountTF2T = std::floor(FinalAmountTF2T / CumulativeScore); 
-		while (Agents.size() != InitAmountCoop + InitAmountDef + InitAmountTFT + InitAmountCrossEye + InitAmountTF2T)
-		{
-			InitAmountCoop++; //Find a better way to do that
-		}
-		KillOff();*/
-	std::cout << "\n Final amount of agents of each type is: \n" << InitAmountCoop << "/" << InitAmountTFT << "/" <<
-		InitAmountDef << "/" << InitAmountCrossEye << "/" << InitAmountTF2T;
+		Scorecard.push_back(temp);
+
+		KillOff();
+	}
+	
+	Statistics();
+	std::cout << "\n Results:";
+	std::cout << "\n Mean Invader Score: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
+	std::cout << "\n Mean Native Score: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
+
 	std::cout << "\n Thank you for using our simulation";
+
+
 	int WaitForInput;
 	std::cin >> WaitForInput;
 	
-	KillOff();
 	return 0;
 }
 
@@ -224,7 +208,7 @@ void Meet()
 }
 void KillOff()
 {
-	for (size_t i = 0; i < Agents.size(); i++)
+	for (size_t i = 0; i < Agents.size(); ++i)
 	{
 		delete Agents[i];
 	}
@@ -241,6 +225,26 @@ int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 	}
 	return tally;
 }
+void Statistics()
+{
+	for (unsigned int i = 0; i < Scorecard.size(); ++i)
+	{
+		InvaderSum += Scorecard[i].InvaderScore;
+		NativeSum += Scorecard[i].NativeScore;
+	}
+	InvaderMean = InvaderSum / float(InitAmountTFT);
+	NativeMean = NativeSum / float(InitAmountDef);
+	float InvaderSumSquares = 0;
+	float NativeSumSquares = 0;
+	for (unsigned int i = 0; i < Scorecard.size(); ++i)
+	{
+		InvaderSumSquares += (Scorecard[i].InvaderScore - InvaderMean)*(Scorecard[i].InvaderScore - InvaderMean);
+		NativeSumSquares += (Scorecard[i].NativeScore - NativeMean)*(Scorecard[i].NativeScore - NativeMean);
+	}
+
+	InvaderStandardDeviation = sqrt(InvaderSumSquares / Scorecard.size());
+	NativeStandardDeviation = sqrt(NativeSumSquares / Scorecard.size());
+}
 bool YesOrNo(float chance)
 {
 	//check if chance is valid
@@ -253,3 +257,4 @@ bool YesOrNo(float chance)
 
 	
 }
+
