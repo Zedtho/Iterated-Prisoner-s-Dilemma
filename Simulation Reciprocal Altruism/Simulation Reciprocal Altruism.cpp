@@ -18,7 +18,7 @@ int main()
 	for (int Generation = 0; Generation < AmountGenerations; ++Generation)
 	{
 		InitializeAgents();
-
+		srand((unsigned int)time(NULL));
 		for (int Round = 0; Round < AmountRounds; ++Round)
 		{
 			Meet();
@@ -80,15 +80,15 @@ void InitializeInputs()
 	
 	std::cout << " \n" << "Insert the amount of starting Tit-for-tatters \n";
 	std::cin >> InitAmountTFT;
-	std::cout << " \n" << "Insert the amount of starting Defectors \n";
-	std::cin >> InitAmountDef;
+	//std::cout << " \n" << "Insert the amount of starting Defectors \n";
+	//std::cin >> InitAmountDef;
 	
 
 
-	std::cout << " \n" << "How many rounds should every generation have? \n";
-	std::cin >> AmountRounds;
-	std::cout << "\n" << "How many total generations until the simulation terminates? \n";
-	std::cin >> AmountGenerations;
+	//std::cout << " \n" << "How many rounds should every generation have? \n";
+	//std::cin >> AmountRounds;
+	//std::cout << "\n" << "How many total generations until the simulation terminates? \n";
+	//std::cin >> AmountGenerations;
 }
 void InitializeAgents()
 {
@@ -147,9 +147,10 @@ void TallyAndOutput()
 void Meet()
 {
 	std::uniform_int_distribution<int> distAlive(0, Agents.size() - 1);
+	
 	for (int i = 0; i < std::floor(Agents.size()*nMeetingsProportion); ++i)
 	{
-		srand((unsigned int)time(NULL));
+		
 		unsigned int FirstCandidateNumber = distAlive(rng);
 		unsigned int SecondCandidateNumber = distAlive(rng);
 
@@ -243,7 +244,7 @@ int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
 bool YesOrNo(float chance)
 {
 	//check if chance is valid
-	if (chance > 1 || chance < 0)
+	if (chance > 1.0f || chance < 0.0f)
 	{
 		std::cout << "fuck";
 
