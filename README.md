@@ -10,9 +10,13 @@ Larger amounts of invading strategies also are unlikely to take over the native 
 The program does this as follows:
 First, it allows the user to set the following variables:
 Initial Amount of All-D (or Defectors - normally set to 2000, though this does not change the results as long as it is big enough)
+
 Initial Amount of Tit-for-tatters (best kept small to properly reflect reality)
+
 Amount of rounds played
-Amount of repetitions (this replays the whole iterated prisoner's dilemma to allow for more accurate and less stochastic statistics)
+
+Amount of trials (this replays the whole iterated prisoner's dilemma to allow for more accurate and less stochastic statistics)
+
 Clustering coefficient
 
 It then plays the iterated prisoner's dilemma with the starting values 3/3 if both cooperate, 1/1 if both defect, and 5/0 if someone defects but the other cooperates.
