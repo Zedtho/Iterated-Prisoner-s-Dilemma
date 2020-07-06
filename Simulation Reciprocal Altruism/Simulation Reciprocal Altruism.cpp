@@ -13,7 +13,7 @@ int main()
 	InitializeInputs();
 
 	srand((unsigned int)time(NULL));
-	for(unsigned int Repetition = 0; Repetition < AmountRepetitions; ++Repetition)
+	for(unsigned int Repetition = 0; Repetition < AmountTrials; ++Repetition)
 	{
 		InitializeAgents();
 		for (int Round = 0; Round < AmountRounds; ++Round)
@@ -43,15 +43,22 @@ int main()
 		Scorecard.push_back(temp);
 
 		KillOff();
-		std::cout << "I killed";
+		std::cout << "\n Time to try again \n";
 	}
 	
 	Statistics();
 	std::cout << "\n Results:";
-	std::cout << "\n Mean Invader Score: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
-	std::cout << "\n Mean Native Score: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
+	std::cout << "\n   Raw Data (Average of the points gotten by Invaders/Natives)";
+	for (unsigned int i = 0; i < Scorecard.size(); ++i)
+	{
+		std::cout << "\n " << Scorecard[i].InvaderScore / InitAmountTFT << " \ " << Scorecard[i].NativeScore / InitAmountDef;
+	}
+	std::cout << "\n Mean Invader Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
+	std::cout << "\n Mean Invader Score per meeting: " << InvaderMean/(2 *AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 *AmountRounds*nMeetingsProportion));
+	std::cout << "\n Mean Native Score per trial: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
+	std::cout << "\n Mean Native Score per meeting: " << NativeMean / (2 *AmountRounds*nMeetingsProportion) << " Standard Deviation: " << NativeStandardDeviation / sqrt((2 *AmountRounds*nMeetingsProportion));
 
-	std::cout << "\n Thank you for using our simulation";
+	std::cout << "\n The simulation is now done. Please insert any key and press enter to quit the program";
 
 
 	int WaitForInput;
@@ -59,21 +66,20 @@ int main()
 	
 	return 0;
 }
-
 void InitializeInputs()
 {
-	
-	std::cout << " \n" << "Insert the amount of starting Tit-for-tatters \n";
+	std::cout << " \n" << "Insert the amount of organisms with the Tit-for-tat strategy \n";
 	std::cin >> InitAmountTFT;
-	//std::cout << " \n" << "Insert the amount of starting Defectors \n";
-	//std::cin >> InitAmountDef;
+	std::cout << " \n" << "Insert the amount of organisms with the Defector strategy \n";
+	std::cin >> InitAmountDef;
+	std::cout << " \n" << "How many rounds should the program do? \n";
+	std::cin >> AmountRounds;
+	std::cout << "\n" << "How many trials should the program do? \n";
+	std::cin >> AmountTrials;
+	std::cout << " \n" << "Insert the clustering coefficient (must be between 0 and 1) \n";
+	std::cin >> ClusteringCoefficient;
 	
 
-
-	//std::cout << " \n" << "How many rounds should every generation have? \n";
-	//std::cin >> AmountRounds;
-	//std::cout << "\n" << "How many total generations until the simulation terminates? \n";
-	//std::cin >> AmountGenerations;
 }
 void InitializeAgents()
 {
@@ -238,8 +244,6 @@ void Statistics()
 	//Calculate mean - error here
 	float InvaderSumPopMean = InvaderSumPopRep / Scorecard.size();
 	float NativeSumPopMean = NativeSumPopRep / Scorecard.size();
-	float Temp = InvaderSumPopRep / InitAmountTFT;
-	std::cout << Temp;
 	InvaderMean = InvaderSumPopMean / ((float)InitAmountTFT);
 	NativeMean = NativeSumPopMean / ((float)InitAmountDef);
 	//Calculate standard deviation
@@ -253,6 +257,7 @@ void Statistics()
 
 	InvaderStandardDeviation = sqrt(InvaderSumSquares / Scorecard.size());
 	NativeStandardDeviation = sqrt(NativeSumSquares / Scorecard.size());
+
 }
 bool YesOrNo(float chance)
 {
