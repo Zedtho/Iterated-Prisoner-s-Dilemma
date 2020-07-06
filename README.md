@@ -17,7 +17,7 @@ Clustering coefficient
 
 It then plays the iterated prisoner's dilemma with the starting values 3/3 if both cooperate, 1/1 if both defect, and 5/0 if someone defects but the other cooperates.
 Two agents are randomly chosen (depending on the clustering coefficient) to play against each other, this is repeated for the user-specified amount of rounds.
-The game is then reset and the game is repeated for the user-specified amount of repetititions.
+The game is then reset and the game is repeated for the user-specified amount of trials.
 
 Finally, the program outputs some raw data and some primitive statistics including the mean and average score per meeting as well as the standard deviation.
 
