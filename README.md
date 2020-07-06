@@ -5,7 +5,7 @@ This program is supposed to be a simulation to test certain game-theoretic appro
 The question it attempts to analyze is how a world of defectors - people unwilling to cooperate - could ever allow any cooperation to be fruitful.
 
 Normally, it is known that the strategy All-D is collectively stable, meaning if any other strategy enters the population it will do just as well or likely worse. 
-Larger amounts of invading strategies also are unlikely to take over the native All-D. The independent variable this program seeks to analyze is whether a clustering coefficient c could affect the final results. Indeed, one finds that at c = 0.15 Tit-for-tat is already successful at invading the native All-D.
+Larger amounts of invading strategies also are unlikely to take over the native All-D. The independent variable this program seeks to analyze is whether a clustering coefficient c could affect the final results. 
 
 The program does this as follows:
 First, it allows the user to set the following variables:
