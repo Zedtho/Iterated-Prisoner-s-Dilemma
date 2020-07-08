@@ -24,8 +24,8 @@ struct Result
 std::vector<Agent*> Agents;
 std::vector<Result> Scorecard;
 //Statistics
-float InvaderSumPopRep = 0; //sum of all the scores of the invaders over different repetitions
-float NativeSumPopRep = 0; //sum of all the scores of the natives over different repetitions
+float InvaderSumPopRep = 0; //sum of all the scores of the invaders over different trials
+float NativeSumPopRep = 0; //sum of all the scores of the natives over different trials
 float InvaderStandardDeviation;
 float NativeStandardDeviation;
 float InvaderMean;
@@ -34,10 +34,12 @@ float NativeMean;
 
 void InitializeAgents();
 int main();
-void InitializeInputs();
-void TallyAndOutput();
+void Input();
 void Meet();
 void KillOff();
-int TallyType(Agent::Strategy strat, std::vector<Agent*> agents);
+void TallyAndOutput();
+int TallyType(Agent::Strategy strat, const std::vector<Agent*> agents);
 void Statistics();
 bool YesOrNo(float chance);
+void Output();
+Result TallyScore(const std::vector<Agent*> agents);

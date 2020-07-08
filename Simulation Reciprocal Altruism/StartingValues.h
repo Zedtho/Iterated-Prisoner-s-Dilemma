@@ -16,7 +16,4 @@ const int temptation = 5;
 const int reward = 3;
 const int punishment = 1;
 
-// Ecological game (not implemented)
-const int DeathScore = 0;
-const int ReproduceScore = 20;
 

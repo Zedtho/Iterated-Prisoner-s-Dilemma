@@ -10,7 +10,7 @@
 int main()
 {
 	//Requests starting parameters of simulation.
-	InitializeInputs();
+	Input();
 
 	srand((unsigned int)time(NULL));
 	for(unsigned int Repetition = 0; Repetition < AmountTrials; ++Repetition)
@@ -21,65 +21,48 @@ int main()
 			Meet();
 			TallyAndOutput();
 		}
-		
-		float AmountDef = 0;
-		float AmountTFT = 0;
-		for (unsigned int i = 0; i < Agents.size(); ++i)
-		{
-			switch (Agents[i]->GetStrategy())
-			{
-			case Agent::Strategy::DEFECTOR:
-				AmountDef += Agents[i]->GetScore();
-				break;
-			case Agent::Strategy::TFT:
-				AmountTFT += Agents[i]->GetScore();
-				break;
-			}
-		}
-		Result temp;
-		temp.NativeScore = AmountDef;
-		temp.InvaderScore = AmountTFT;
-		
-		Scorecard.push_back(temp);
-
+		Scorecard.push_back(TallyScore(Agents));
 		KillOff();
-		std::cout << "\n Time to try again \n";
+		std::cout << "\n ---------------- End of Trial " << Repetition + 1 << " ------------------ \n";
 	}
-	
 	Statistics();
+	Output();
+	
+	return 0;
+}
+void Input()
+{
+	std::cout << " \n" << "Insert the amount of organisms with the Tit-for-tat strategy \n";
+	std::cin >> InitAmountTFT;
+	std::cout << " \n" << "Insert the amount of organisms with the Defector strategy \n";
+	std::cin >> InitAmountDef;
+	std::cout << " \n" << "What is the average amount of rounds each organism plays the Prisoner's dilemma? \n";
+	std::cin >> AmountRounds;
+	std::cout << "\n" << "How many trials should the program do? \n";
+	std::cin >> AmountTrials;
+	std::cout << " \n" << "Insert the clustering coefficient (must be between 0 and 1) \n";
+	std::cin >> ClusteringCoefficient;
+	std::cout << " \n \n --------------- Processing ---------------";
+
+}
+void Output()
+{
 	std::cout << "\n Results:";
-	std::cout << "\n   Raw Data (Average of the points gotten by Invaders/Natives)";
+	std::cout << "\n   Raw Data (Average of the points gotten by Tit-for-tatters (TFT)/Defectors)";
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
 		std::cout << "\n " << Scorecard[i].InvaderScore / InitAmountTFT << " \ " << Scorecard[i].NativeScore / InitAmountDef;
 	}
-	std::cout << "\n Mean Invader Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
-	std::cout << "\n Mean Invader Score per meeting: " << InvaderMean/(2 *AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 *AmountRounds*nMeetingsProportion));
-	std::cout << "\n Mean Native Score per trial: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
-	std::cout << "\n Mean Native Score per meeting: " << NativeMean / (2 *AmountRounds*nMeetingsProportion) << " Standard Deviation: " << NativeStandardDeviation / sqrt((2 *AmountRounds*nMeetingsProportion));
+	std::cout << "\n Mean TFT Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
+	std::cout << "\n Mean TFT Score per meeting: " << InvaderMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
+	std::cout << "\n Mean Defector Score per trial: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
+	std::cout << "\n Mean Defector Score per meeting: " << NativeMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << NativeStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
 
 	std::cout << "\n The simulation is now done. Please insert any key and press enter to quit the program";
 
 
 	int WaitForInput;
 	std::cin >> WaitForInput;
-	
-	return 0;
-}
-void InitializeInputs()
-{
-	std::cout << " \n" << "Insert the amount of organisms with the Tit-for-tat strategy \n";
-	std::cin >> InitAmountTFT;
-	std::cout << " \n" << "Insert the amount of organisms with the Defector strategy \n";
-	std::cin >> InitAmountDef;
-	std::cout << " \n" << "How many rounds should the program do? \n";
-	std::cin >> AmountRounds;
-	std::cout << "\n" << "How many trials should the program do? \n";
-	std::cin >> AmountTrials;
-	std::cout << " \n" << "Insert the clustering coefficient (must be between 0 and 1) \n";
-	std::cin >> ClusteringCoefficient;
-	
-
 }
 void InitializeAgents()
 {
@@ -221,7 +204,7 @@ void KillOff()
 	}
 	Agents.clear();
 }
-int TallyType(Agent::Strategy strat, std::vector<Agent*> agents)
+int TallyType(Agent::Strategy strat, const std::vector<Agent*> agents)
 {
 	int tally = 0;
 	for (unsigned int i = 0; i < agents.size(); ++i)
@@ -271,4 +254,24 @@ bool YesOrNo(float chance)
 
 	
 }
-
+Result TallyScore(const std::vector<Agent*> agents)
+{
+	float AmountDef = 0;
+	float AmountTFT = 0;
+	for (unsigned int i = 0; i < agents.size(); ++i)
+	{
+		switch (agents[i]->GetStrategy())
+		{
+		case Agent::Strategy::DEFECTOR:
+			AmountDef += agents[i]->GetScore();
+			break;
+		case Agent::Strategy::TFT:
+			AmountTFT += agents[i]->GetScore();
+			break;
+		}
+	}
+	Result temp;
+	temp.NativeScore = AmountDef;
+	temp.InvaderScore = AmountTFT;
+	return temp;
+}
