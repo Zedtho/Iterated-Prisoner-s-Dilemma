@@ -1,24 +1,12 @@
 # Simulation-Reciprocal-Altruism
-Game Theoretic Simulation of the Tit-for-tat strategy
+Game Theoretic Simulation of the iterated Prisoner's dilemma
 
 This program is supposed to be a simulation to test certain game-theoretic approaches to the evolution of reciprocal altruism.
 
-In its current stage it contains three strategies that an "agent" (in nature rather an organism) can have:
-It can be a Cooperator, meaning it will always operate.
-It can be a Tit-For-Tatter (shortened TFT in the program), meaning it will cooperate and subsequently copy its opponent's action against that opponent. 
-(in other words, if Agents cooperate, TFT will cooperate, if not, it will deflect as a form of vengeance.)
-It can also be a Deflector, meaning it will always deflect.
+The different branches have different functionalities:
+Master contains the most strategies that can be tinkered with and is the most general.
+Invasion is tailor-made for an investigation on the invasion of the Tit-for-tat strategy of a native All-D.
 
-Every round, agents will meet each other and decide which strategy they will use. 
-Depending on who deflects/cooperates, the different agents receive different punishments/rewards. 
-A negative score for an agent means it dies; A score larger than some reproductionscore means it reproduces.
-
-It is expected that the TFT strategy is most effective, and that as such it will be the largest ratio at the end of the game.
-As such, reciprocal altruism can be shown to be an effective strategy.
-
-This theory is one I wanted to check with a program for a biological paper I am writing for school.
-
-The most functional simulation so far is the branch "Score"
 
 Acknowledgements:
 This project would not have been possible without the extremely helpful ideas from Albinopapa and Slidy of the planetchili.net forum!
