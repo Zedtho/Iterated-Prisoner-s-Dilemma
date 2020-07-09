@@ -40,8 +40,14 @@ void Input()
 	std::cin >> AmountRounds;
 	std::cout << "\n" << "How many trials should the program do? \n";
 	std::cin >> AmountTrials;*/
+	
 	std::cout << " \n" << "Insert the clustering coefficient (must be between 0 and 1) \n";
 	std::cin >> ClusteringCoefficient;
+	while (ClusteringCoefficient > 1 || ClusteringCoefficient < 0)
+	{
+		std::cout << " \nClustering coefficient not between 0 and 1. Please try again \n";
+		std::cin >> ClusteringCoefficient;
+	}
 	std::cout << " \n \n --------------- Processing ---------------";
 }
 void Output()
