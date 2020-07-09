@@ -32,18 +32,17 @@ int main()
 }
 void Input()
 {
-	std::cout << " \n" << "Insert the amount of organisms with the Tit-for-tat strategy \n";
+	/*std::cout << " \n" << "Insert the amount of organisms with the Tit-for-tat strategy \n";
 	std::cin >> InitAmountTFT;
 	std::cout << " \n" << "Insert the amount of organisms with the Defector strategy \n";
 	std::cin >> InitAmountDef;
 	std::cout << " \n" << "What is the average amount of rounds each organism plays the Prisoner's dilemma? \n";
 	std::cin >> AmountRounds;
 	std::cout << "\n" << "How many trials should the program do? \n";
-	std::cin >> AmountTrials;
+	std::cin >> AmountTrials;*/
 	std::cout << " \n" << "Insert the clustering coefficient (must be between 0 and 1) \n";
 	std::cin >> ClusteringCoefficient;
 	std::cout << " \n \n --------------- Processing ---------------";
-
 }
 void Output()
 {
@@ -51,7 +50,7 @@ void Output()
 	std::cout << "\n   Raw Data (Average of the points gotten by Tit-for-tatters (TFT)/Defectors)";
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
-		std::cout << "\n " << Scorecard[i].InvaderScore / InitAmountTFT << " \ " << Scorecard[i].NativeScore / InitAmountDef;
+		std::cout << "\n /" << Scorecard[i].InvaderScore / InitAmountTFT << "/" << Scorecard[i].NativeScore / InitAmountDef;
 	}
 	std::cout << "\n Mean TFT Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
 	std::cout << "\n Mean TFT Score per meeting: " << InvaderMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
@@ -136,27 +135,41 @@ void Meet()
 		case Agent::Strategy::TFT:
 			if (Cluster)
 			{
-				while(Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
+				//Make SecondCandidate a TFT
+				while(Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::DEFECTOR)
 				{
 					SecondCandidateNumber = rand() % Agents.size();
 				}
 			}
 			else
 			{
+				//Make SecondCandidate a Defector
 				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
 				{
 					SecondCandidateNumber = rand() % Agents.size();
 				}
 			}
 			break;
-		default:
-			if (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT && Cluster)
+		case Agent::Strategy::DEFECTOR:
+			if (Cluster)
 			{
-				while (Agents[FirstCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
+				//Make SecondCandidate a Defector
+				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
 				{
-					FirstCandidateNumber = rand() % Agents.size();
+					SecondCandidateNumber = rand() % Agents.size();
 				}
 			}
+			else
+			{
+				//Make SecondCandidate a TFT
+				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::DEFECTOR)
+				{
+					SecondCandidateNumber = rand() % Agents.size();
+				}
+			}
+			break;
+		default: 
+			std::cout << "----------------SOMETHING IS WRONG-----------";
 			break;
 		}
 		
@@ -247,7 +260,7 @@ bool YesOrNo(float chance)
 	//check if chance is valid
 	if (chance > 1.0f || chance < 0.0f)
 	{
-		std::cout << "fuck";
+		std::cout << "Something is terribly wrong with the clustering coefficient";
 
 	}
 	return rand() % 100 < (chance * 100);
