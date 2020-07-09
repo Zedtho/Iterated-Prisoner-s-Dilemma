@@ -25,19 +25,22 @@ struct Result
 
 std::vector<Agent*> Agents;
 std::vector<Result> Scorecard;
+std::vector<std::vector<int>> CSPRTFT; //CumulativescoreperroundTFT - Basically given the round and trial stores the cumulative amount of points a group of TFT earned in that round and trial
+std::vector<std::vector<int>> CSPRD; //CumulativescoreperroundDef - same as above but for Defectors
 //Statistics
-float InvaderSumPopRep = 0; //sum of all the scores of the invaders over different trials
-float NativeSumPopRep = 0; //sum of all the scores of the natives over different trials
+std::vector<float> MeanEachRoundTFT;
+std::vector<float> MeanEachRoundDef;
+float InvaderSumPopRep = 0; //sum of all the scores of the invaders over different trials - could be incorporated in CSPRTFT and CSPRD
+float NativeSumPopRep = 0; //sum of all the scores of the natives over different trials  - could be incorporated in CSPRTFT and CSPRD
 float InvaderStandardDeviation;
 float NativeStandardDeviation;
 float InvaderMean;
 float NativeMean;
 
-
-void InitializeAgents();
+void Initialize();
 int main();
 void Input();
-void Meet();
+void Meet(int Round, int Trial);
 void KillOff();
 void TallyAndOutput();
 int TallyType(Agent::Strategy strat, const std::vector<Agent*> agents);

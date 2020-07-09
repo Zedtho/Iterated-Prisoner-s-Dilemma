@@ -10,18 +10,18 @@ int main()
 	//Requests starting parameters of simulation.
 	Input();
 	srand(time(NULL));
-	for(unsigned int Repetition = 0; Repetition < AmountTrials; ++Repetition)
+	for(unsigned int Trial = 0; Trial < AmountTrials; ++Trial)
 	{
 		
-		InitializeAgents();
+		Initialize();
 		for (int Round = 0; Round < AmountRounds; ++Round)
 		{
-			Meet();
-			TallyAndOutput();
+			Meet(Round, Trial);
+			if (DoOutputAvgCumulativeScore) { TallyAndOutput(); }
 		}
 		Scorecard.push_back(TallyScore(Agents));
 		KillOff();
-		std::cout << "\n ---------------- End of Trial " << Repetition + 1 << " ------------------ \n";
+		std::cout << "\n ---------------- End of Trial " << Trial + 1 << " ------------------ \n";
 	}
 	Statistics();
 	Output();
@@ -51,10 +51,17 @@ void Input()
 void Output()
 {
 	std::cout << "\n Results:";
-	std::cout << "\n   Raw Data (Average of the points gotten by Tit-for-tatters (TFT)/Defectors)";
+	std::cout << "\n   --------------------- Data ---------------- \n ---------Average of the points gotten per trial-------- \n"; 
+	std::cout << "Tit-for-tat /  Defector";
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
 		std::cout << "\n /" << Scorecard[i].InvaderScore / InitAmountTFT << "/" << Scorecard[i].NativeScore / InitAmountDef;
+	}
+	std::cout << "\n -------Average points gotten in a round-------- \n";
+	std::cout << "Tit-for-tat /  Defector";
+	for (unsigned int i = 0; i < AmountRounds; ++i)
+	{
+			std::cout << "\n " << MeanEachRoundTFT[i]/float(InitAmountTFT) << "/" << MeanEachRoundDef[i]/float(InitAmountDef);
 	}
 	std::cout << "\n Mean TFT Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
 	std::cout << "\n Mean TFT Score per meeting: " << InvaderMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
@@ -67,7 +74,7 @@ void Output()
 	int WaitForInput;
 	std::cin >> WaitForInput;
 }
-void InitializeAgents()
+void Initialize()
 {
 	for (int i = 0; i < InitAmountCoop; ++i)
 	{
@@ -88,6 +95,18 @@ void InitializeAgents()
 	for (int i = 0; i < InitAmountTF2T; ++i)
 	{
 		Agents.push_back(new TF2T);
+	}
+
+	for (int i = 0; i < AmountTrials; ++i)
+	{
+		std::vector<int> temp;
+		CSPRTFT.push_back(temp);
+		CSPRD.push_back(temp);
+		for (int j = 0; j < AmountRounds; ++j)
+		{
+			CSPRTFT[i].push_back(0);
+			CSPRD[i].push_back(0);
+		}
 	}
 }
 void TallyAndOutput()
@@ -120,7 +139,7 @@ void TallyAndOutput()
 	}
 	std::cout << "\n"  "/" << AmountTFT / TallyType(Agent::Strategy::TFT, Agents) << "/" << AmountDef / TallyType(Agent::Strategy::DEFECTOR, Agents);
 }
-void Meet()
+void Meet(int Round, int Trial)
 {
 	std::uniform_int_distribution<int> distAlive(0, Agents.size() - 1);
 	
@@ -194,11 +213,47 @@ void Meet()
 			{
 				Agents[FirstCandidateNumber]->score += reward;
 				Agents[SecondCandidateNumber]->score += reward;
+				switch (Agents[FirstCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += reward;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += reward;
+					break;
+				}
+				switch (Agents[SecondCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += reward;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += reward;
+					break;
+				}
 			}
 			else
 			{
 				Agents[FirstCandidateNumber]->score += suckersPayoff;
 				Agents[SecondCandidateNumber]->score += temptation;
+				switch (Agents[FirstCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += suckersPayoff;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += suckersPayoff;
+					break;
+				}
+				switch (Agents[SecondCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += temptation;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += temptation;
+					break;
+				}
 			}
 			break;
 		case false:
@@ -206,11 +261,47 @@ void Meet()
 			{
 				Agents[FirstCandidateNumber]->score += temptation;
 				Agents[SecondCandidateNumber]->score += suckersPayoff;
+				switch (Agents[FirstCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += temptation;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += temptation;
+					break;
+				}
+				switch (Agents[SecondCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += suckersPayoff;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += suckersPayoff;
+					break;
+				}
 			}
 			else
 			{
 				Agents[FirstCandidateNumber]->score += punishment;
 				Agents[SecondCandidateNumber]->score += punishment;
+				switch (Agents[FirstCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += punishment;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += punishment;
+					break;
+				}
+				switch (Agents[SecondCandidateNumber]->GetStrategy())
+				{
+				case Agent::Strategy::TFT:
+					CSPRTFT[Trial][Round] += punishment;
+					break;
+				case Agent::Strategy::DEFECTOR:
+					CSPRD[Trial][Round] += punishment;
+					break;
+				}
 			}
 			break;
 		}
@@ -241,7 +332,7 @@ int TallyType(Agent::Strategy strat, const std::vector<Agent*> agents)
 }
 void Statistics()
 {
-	//Why does it go through this loop 5 times?
+	
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
 		InvaderSumPopRep += Scorecard[i].InvaderScore;
@@ -260,17 +351,30 @@ void Statistics()
 		InvaderSumSquares += (Scorecard[i].InvaderScore/InitAmountTFT  - InvaderMean)*(Scorecard[i].InvaderScore / InitAmountTFT - InvaderMean);
 		NativeSumSquares += (Scorecard[i].NativeScore/InitAmountDef - NativeMean)*(Scorecard[i].NativeScore/InitAmountDef - NativeMean);
 	}
-
 	InvaderStandardDeviation = sqrt(InvaderSumSquares / Scorecard.size());
 	NativeStandardDeviation = sqrt(NativeSumSquares / Scorecard.size());
 
+	
+	for (unsigned int i = 0; i < AmountRounds; ++i)
+	{
+		float SumEachRoundTFT = 0;
+		float SumEachRoundDef = 0;
+		for (unsigned int j = 0; j < AmountTrials; ++j)
+		{
+			SumEachRoundTFT += float(CSPRTFT[j][i]);
+			SumEachRoundDef += float(CSPRD[j][i]);
+		}
+		MeanEachRoundTFT.push_back(SumEachRoundTFT / float(AmountTrials));
+		MeanEachRoundDef.push_back(SumEachRoundDef / float(AmountTrials));
+	}
+	
 }
 bool YesOrNo(float chance)
 {
 	//check if chance is valid
 	if (chance > 1.0f || chance < 0.0f)
 	{
-		std::cout << "Something is terribly wrong with a certain probability";
+		std::cout << "A certain probability was out of bounds. Please report this to the github author.";
 	}
 	std::bernoulli_distribution bernoulli(chance);
 	return bernoulli(rng);
