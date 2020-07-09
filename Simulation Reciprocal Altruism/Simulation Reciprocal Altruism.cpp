@@ -3,18 +3,16 @@
 
 #include "stdafx.h"
 #include "Simulation Reciprocal Altruism.h"
-#include<time.h>
-#include <random>
 
 
 int main()
 {
 	//Requests starting parameters of simulation.
 	Input();
-
-	srand((unsigned int)time(NULL));
+	srand(time(NULL));
 	for(unsigned int Repetition = 0; Repetition < AmountTrials; ++Repetition)
 	{
+		
 		InitializeAgents();
 		for (int Round = 0; Round < AmountRounds; ++Round)
 		{
@@ -74,7 +72,6 @@ void InitializeAgents()
 	for (int i = 0; i < InitAmountCoop; ++i)
 	{
 		Agents.push_back(new Cooperator);
-
 	}
 	for (int i = 0; i < InitAmountTFT; ++i)
 	{
@@ -134,51 +131,58 @@ void Meet()
 		unsigned int SecondCandidateNumber = distAlive(rng);
 
 		//playing against itself is normally a possibility within game theory as well, but personally I find it makes no sense. It gives rather unintuitive results.
-		//Choose which type it is for this round (only necessary if it is not one of the invaded
-		bool Cluster = YesOrNo(ClusteringCoefficient);
-		switch (Agents[FirstCandidateNumber]->GetStrategy())
+		//Choose which type it is for this round 
+		
+		if (YesOrNo(float(InitAmountTFT) / float(InitAmountTFT + InitAmountDef)))
 		{
-		case Agent::Strategy::TFT:
-			if (Cluster)
+			//1st must be TFT
+			while (Agents[FirstCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
 			{
-				//Make SecondCandidate a TFT
-				while(Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::DEFECTOR)
+				FirstCandidateNumber = distAlive(rng);
+			}
+			if (YesOrNo(ClusteringCoefficient))
+			{
+				//2nd must be TFT now too
+				while (Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
 				{
-					SecondCandidateNumber = rand() % Agents.size();
+					SecondCandidateNumber = distAlive(rng);
 				}
 			}
 			else
 			{
-				//Make SecondCandidate a Defector
-				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
+				//2nd must be All-D 
+				while (Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::DEFECTOR)
 				{
-					SecondCandidateNumber = rand() % Agents.size();
+					SecondCandidateNumber = distAlive(rng);
 				}
 			}
-			break;
-		case Agent::Strategy::DEFECTOR:
-			if (Cluster)
+		}
+		else
+		{
+			//1st must be Def w/probability InitAmountDef/(InitAmountTFT + InitAmountDef)
+			while (Agents[FirstCandidateNumber]->GetStrategy() != Agent::Strategy::DEFECTOR)
 			{
-				//Make SecondCandidate a Defector
-				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::TFT)
+				FirstCandidateNumber = distAlive(rng);
+			}
+			
+			if ( YesOrNo(float(InitAmountTFT)*float(1 - ClusteringCoefficient) / float(InitAmountDef)) )
+			{
+				//2nd must be TFT w/probability as shown above)
+				while (Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::TFT)
 				{
-					SecondCandidateNumber = rand() % Agents.size();
+					SecondCandidateNumber = distAlive(rng);
 				}
 			}
 			else
 			{
-				//Make SecondCandidate a TFT
-				while (Agents[SecondCandidateNumber]->GetStrategy() == Agent::Strategy::DEFECTOR)
+				while (Agents[SecondCandidateNumber]->GetStrategy() != Agent::Strategy::DEFECTOR)
 				{
-					SecondCandidateNumber = rand() % Agents.size();
+					SecondCandidateNumber = distAlive(rng);
 				}
 			}
-			break;
-		default: 
-			std::cout << "----------------SOMETHING IS WRONG-----------";
-			break;
 		}
 		
+	
 		bool WillFirstCoop = Agents[FirstCandidateNumber]->WillCooperate(Agents[SecondCandidateNumber]);
 		bool WillSecondCoop = Agents[SecondCandidateNumber]->WillCooperate(Agents[FirstCandidateNumber]);
 
@@ -266,12 +270,10 @@ bool YesOrNo(float chance)
 	//check if chance is valid
 	if (chance > 1.0f || chance < 0.0f)
 	{
-		std::cout << "Something is terribly wrong with the clustering coefficient";
-
+		std::cout << "Something is terribly wrong with a certain probability";
 	}
-	return rand() % 100 < (chance * 100);
-
-	
+	std::bernoulli_distribution bernoulli(chance);
+	return bernoulli(rng);
 }
 Result TallyScore(const std::vector<Agent*> agents)
 {
