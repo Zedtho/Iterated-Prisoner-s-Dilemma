@@ -21,5 +21,5 @@ const int punishment = 1;
 //Output variables
 bool DoOutputAvgCumulativeScore = false;
 std::string AvgPointsPerTrialName = "AvgPointsPerTrial";
-std::string AvgPointsPerRoundName = "AvgPointsPerRoundName";
+std::string AvgPointsPerRoundName = "AvgPointsPerRound";
 std::string StatsName = "Statistics";

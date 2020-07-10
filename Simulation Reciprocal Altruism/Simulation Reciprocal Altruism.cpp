@@ -57,9 +57,9 @@ void Output()
 	ClusterConverter << ClusteringCoefficient;
 	std::string s(ClusterConverter.str());
 
-	AvgPointsPerTrialName = AvgPointsPerTrialName + '_' + s + ".txt";
-	AvgPointsPerRoundName = AvgPointsPerRoundName + '_' + s + ".txt";
-	StatsName = StatsName + '_' + s + ".txt";
+	AvgPointsPerTrialName = s + '_' + AvgPointsPerTrialName + ".txt";
+	AvgPointsPerRoundName = s + '_' + AvgPointsPerRoundName + ".txt";
+	StatsName = s + '_' + StatsName + ".txt";
 	Output1.open(AvgPointsPerTrialName);
 	Output2.open(AvgPointsPerRoundName);
 	Output3.open(StatsName);

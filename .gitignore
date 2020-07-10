@@ -240,3 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/Simulation Reciprocal Altruism/0.5_Statistics.txt
+/Simulation Reciprocal Altruism/0.5_AvgPointsPerTrial.txt
+/Simulation Reciprocal Altruism/0.5_AvgPointsPerRound.txt
