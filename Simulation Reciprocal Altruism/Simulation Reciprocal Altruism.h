@@ -13,6 +13,9 @@
 #include "StartingValues.h"
 #include <ctime>
 #include <random>
+#include <fstream>
+#include <sstream>
+
 
 std::random_device rd;
 std::mt19937 rng(rd());
@@ -34,6 +37,8 @@ float InvaderSumPopRep = 0; //sum of all the scores of the invaders over differe
 float NativeSumPopRep = 0; //sum of all the scores of the natives over different trials  - could be incorporated in CSPRTFT and CSPRD
 float InvaderStandardDeviation;
 float NativeStandardDeviation;
+std::vector<float> TFTStandardDeviationPerRound;
+std::vector<float> DefStandardDeviationPerRound;
 float InvaderMean;
 float NativeMean;
 

@@ -50,26 +50,49 @@ void Input()
 }
 void Output()
 {
+	std::ofstream Output1;
+	std::ofstream Output2;
+	std::ofstream Output3;
+	std::ostringstream ClusterConverter;
+	ClusterConverter << ClusteringCoefficient;
+	std::string s(ClusterConverter.str());
+
+	AvgPointsPerTrialName = AvgPointsPerTrialName + '_' + s + ".txt";
+	AvgPointsPerRoundName = AvgPointsPerRoundName + '_' + s + ".txt";
+	StatsName = StatsName + '_' + s + ".txt";
+	Output1.open(AvgPointsPerTrialName);
+	Output2.open(AvgPointsPerRoundName);
+	Output3.open(StatsName);
+
 	std::cout << "\n Results:";
 	std::cout << "\n   --------------------- Data ---------------- \n ---------Average of the points gotten per trial-------- \n"; 
 	std::cout << "Tit-for-tat /  Defector";
 	for (unsigned int i = 0; i < Scorecard.size(); ++i)
 	{
 		std::cout << "\n /" << Scorecard[i].InvaderScore / InitAmountTFT << "/" << Scorecard[i].NativeScore / InitAmountDef;
+		Output1 << "\n /" << Scorecard[i].InvaderScore / InitAmountTFT << "/" << Scorecard[i].NativeScore / InitAmountDef;
 	}
-	std::cout << "\n -------Average points gotten in a round-------- \n";
+	Output1.close();
+	std::cout << "\n -------Average points gotten in round 1,2,3 etc... over the trials and Standard Deviation--------  \n";
+
 	std::cout << "Tit-for-tat /  Defector";
 	for (unsigned int i = 0; i < AmountRounds; ++i)
 	{
-			std::cout << "\n " << MeanEachRoundTFT[i]/float(InitAmountTFT) << "/" << MeanEachRoundDef[i]/float(InitAmountDef);
+			std::cout << "\n " << MeanEachRoundTFT[i]/float(InitAmountTFT) << "/" << MeanEachRoundDef[i]/float(InitAmountDef) <<"/" << TFTStandardDeviationPerRound[i] << "/" << DefStandardDeviationPerRound[i]; 
+			Output2 << "\n /" << MeanEachRoundTFT[i] / float(InitAmountTFT) << "/" << MeanEachRoundDef[i] / float(InitAmountDef);
 	}
+	Output2.close();
 	std::cout << "\n Mean TFT Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
 	std::cout << "\n Mean TFT Score per meeting: " << InvaderMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
 	std::cout << "\n Mean Defector Score per trial: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
 	std::cout << "\n Mean Defector Score per meeting: " << NativeMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << NativeStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
 
-	std::cout << "\n The simulation is now done. Please insert any key and press enter to quit the program";
-
+	Output3 << "\n Mean TFT Score per trial: " << InvaderMean << " Standard Deviation: " << InvaderStandardDeviation;
+	Output3 << "\n Mean TFT Score per meeting: " << InvaderMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << InvaderStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
+	Output3 << "\n Mean Defector Score per trial: " << NativeMean << " Standard Deviation: " << NativeStandardDeviation;
+	Output3 << "\n Mean Defector Score per meeting: " << NativeMean / (2 * AmountRounds*nMeetingsProportion) << " Standard Deviation: " << NativeStandardDeviation / sqrt((2 * AmountRounds*nMeetingsProportion));
+	Output3 << "\n The simulation is now done. Please insert any key and press enter to quit the program";
+	Output3.close();
 
 	int WaitForInput;
 	std::cin >> WaitForInput;
@@ -359,13 +382,23 @@ void Statistics()
 	{
 		float SumEachRoundTFT = 0;
 		float SumEachRoundDef = 0;
+		float SumSquareEachRoundTFT = 0;
+		float SumSquareEachRoundDef = 0;
 		for (unsigned int j = 0; j < AmountTrials; ++j)
 		{
 			SumEachRoundTFT += float(CSPRTFT[j][i]);
 			SumEachRoundDef += float(CSPRD[j][i]);
+			
 		}
 		MeanEachRoundTFT.push_back(SumEachRoundTFT / float(AmountTrials));
 		MeanEachRoundDef.push_back(SumEachRoundDef / float(AmountTrials));
+		for (unsigned int j = 0; j < AmountTrials; ++j)
+		{
+			SumSquareEachRoundTFT += ( float(CSPRTFT[j][i]) - MeanEachRoundTFT[i])*( float(CSPRTFT[j][i]) - MeanEachRoundTFT[i])/float(InitAmountTFT)/float(InitAmountTFT);
+			SumSquareEachRoundDef += ( float(CSPRD[j][i]) - MeanEachRoundDef[i])*( float(CSPRD[j][i]) - MeanEachRoundDef[i]) / float(InitAmountDef) / float(InitAmountDef);
+		}
+		TFTStandardDeviationPerRound.push_back(sqrt(SumSquareEachRoundTFT/AmountTrials));
+		DefStandardDeviationPerRound.push_back(sqrt(SumSquareEachRoundDef/AmountTrials));
 	}
 	
 }
